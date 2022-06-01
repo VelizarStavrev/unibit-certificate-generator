@@ -13,7 +13,7 @@ function Header() {
                     </li>
 
                     <li>
-                        <NavLink to='/Register'>Register</NavLink>
+                        <NavLink to='/register'>Register</NavLink>
                     </li>
 
                     <li>
