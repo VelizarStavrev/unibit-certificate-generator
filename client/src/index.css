@@ -44,4 +44,5 @@ body {
   --box-shadow-card: 2px 2px 10px rgba(0, 0, 0, 0.25);
   --box-shadow-bottom: 0px 2px 10px rgba(0, 0, 0, 0.25);
   --box-shadow-top: 0px -2px 4px rgba(0, 0, 0, 0.25);
+  --table-border-color: #C4C4C4;
 }

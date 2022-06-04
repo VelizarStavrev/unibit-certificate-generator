@@ -24,15 +24,15 @@ function Home() {
                 </Link>
 
                 <Link className='home-card' to='/documentation'>
-                    <p className='home-card-title'>Dcoumentation</p>
+                    <p className='home-card-title'>Documentation</p>
                     <p className='home-card-description'>View the documentation for users or developers.</p>
-                    <p className='home-card-arrow'>Dcoumentation <img src={arrow} alt='' /></p>
+                    <p className='home-card-arrow'>Documentation <img src={arrow} alt='' /></p>
                 </Link>
 
                 <Link className='home-card' to='/contacts'>
                     <p className='home-card-title'>Contacts</p>
                     <p className='home-card-description'>Contact us if you require assistance or information!</p>
-                    <p className='home-card-arrow'>Contacts <img src={arrow} alt='' /></p>
+                    <p className='home-card-arrow'>Contacts<img src={arrow} alt='' /></p>
                 </Link>
             </div>
         </div>

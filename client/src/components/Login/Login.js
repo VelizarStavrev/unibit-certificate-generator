@@ -8,10 +8,10 @@ function Login() {
                 <h1>Login</h1>
 
                 <label>Username</label>
-                <input type="text" name="username" />
+                <input type='text' name='username' />
 
                 <label>Password</label>
-                <input type="text" name="username" />
+                <input type='password' name='password' />
                 <p className='login-error'>Invalid username or password!</p>
 
                 <button className='login-button' type='button'>Login</button>

@@ -1,0 +1,85 @@
+.verify-container {
+    max-width: 1040px;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+}
+
+.verify-help-text {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.verify-container .verify-search-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 0;
+}
+
+.verify-container .verify-search-container .verify-search {
+    padding: 20px;
+    padding-left: 40px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: var(--box-shadow-card);
+    background-color: var(--main-color);
+    text-align: left;
+    font-size: 16px;
+    width: 100%;
+    background: url("../../assets/icons/search.svg") 10px 50% no-repeat;
+}
+
+.verify-container .verify-search-container  .verify-search::placeholder {
+    color: var(--table-border-color);
+}
+
+.verify-container .verify-search-container  button {
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    box-shadow: var(--box-shadow-card);
+    text-transform: uppercase;
+    padding: 20px;
+    font-size: 16px;
+    text-decoration: none;
+    color: var(--main-color);
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.25s;
+    margin-left: 20px;
+    white-space: nowrap;
+    border: none;
+}
+
+.verify-container .verify-search-container  button:hover {
+    background-color: var(--secondary-color-hover);
+}
+
+.verify-container .verify-message-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto 0;
+}
+
+.verify-container .verify-message-container img {
+    width: 75px;
+    margin-bottom: 20px;
+}
+
+.verify-container .verify-message-container p {
+   font-weight: bold;
+}
+
+.verify-container .verify-message-container .verify-message-link {
+    color: var(--link-color);
+    transition: color 0.25s;
+}
+
+.verify-container .verify-message-container .verify-message-link:hover {
+    color: var(--link-color-hover);
+}

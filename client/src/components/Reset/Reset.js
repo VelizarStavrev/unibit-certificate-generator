@@ -8,7 +8,7 @@ function Reset() {
                 <h1>Reset</h1>
 
                 <label>E-mail / Username</label>
-                <input type="text" name="username" />
+                <input type='text' name='username' />
                 <p className='reset-error'>Invalid username or password!</p>
 
                 <button className='reset-button' type='button'>Reset</button>
