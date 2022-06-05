@@ -1,0 +1,95 @@
+.documentation-container {
+    max-width: 1040px;
+    margin: 20px auto;
+    width: 100%;
+    align-self: flex-start;
+    display: flex;
+    align-items: flex-start;
+}
+
+.documentation-container .documentation-links-container {
+    min-width: 215px;
+    box-shadow: var(--box-shadow-card);
+    border-radius: 10px;
+}
+
+.documentation-container .documentation-links-container .documentation-links-website,
+.documentation-container .documentation-links-container .documentation-links-api {
+    display: flex;
+    flex-direction: column;
+}
+
+.documentation-container .documentation-links-container .documentation-links {
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    pointer-events: none;
+    transition: max-height 0.5s;
+    overflow: hidden;
+}
+
+.documentation-container .documentation-links-container .documentation-links.active {
+    max-height: 500px;
+    pointer-events: initial;
+    transition: max-height 0.5s;
+}
+
+.documentation-container .documentation-links-header {
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.5s;
+}
+
+.documentation-container .documentation-links-website .documentation-links-header {
+    border-color: var(--table-border-color);
+}
+
+.documentation-container .documentation-links-header.active {
+    border-color: var(--table-border-color);
+    transition: border-color 0.25s;
+}
+
+.documentation-container .documentation-links-container .documentation-link {
+    padding: 10px;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.documentation-container .documentation-links-container .documentation-links-api .documentation-link:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.documentation-container .documentation-links-container .documentation-link {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.documentation-container .documentation-links-container .documentation-link.active,
+    .documentation-container .documentation-links-container .documentation-link:hover {
+    background-color: var(--secondary-color);
+    color: var(--main-color);
+}
+
+.documentation-container .documentation-content-container {
+    margin-left: 20px;
+}
+
+.documentation-container .documentation-content-container > * {
+    margin-bottom: 10px;
+}
+
+.documentation-container .documentation-content-container > *:last-child {
+    margin-bottom: 0px;
+}
+
+.documentation-container .documentation-content-container .documentation-content-header {
+    font-weight: bold;
+    text-align: left;
+}

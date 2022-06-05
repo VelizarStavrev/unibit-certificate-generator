@@ -11,6 +11,7 @@ import Footer from './components/Shared/Footer/Footer';
 // Pages - Anonymous and logged in
 import Home from './components/Home/Home';
 import Verify from './components/Verify/Verify';
+import Documentation from './components/Documentation/Documentation';
 import Contacts from './components/Contacts/Contacts';
 
 // Pages - Account Related
@@ -31,6 +32,11 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/verify' element={<Verify />} />
+            <Route path='/documentation' element={<Documentation />}>
+              <Route path=':section' element={<Documentation />}>
+                <Route path=':topic' element={<Documentation />} />
+              </Route>
+            </Route>
             <Route path='/contacts' element={<Contacts />} />
 
             <Route path='/register' element={<Register />} />

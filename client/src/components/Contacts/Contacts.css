@@ -15,12 +15,6 @@
     width: 100%;
 }
 
-.contacts-container form h1 {
-    text-align: center;
-    font-size: 48px;
-    text-transform: uppercase;
-}
-
 .contacts-container form label {
     margin-top: 20px;
     margin-bottom: 5px;

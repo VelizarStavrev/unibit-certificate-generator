@@ -3,11 +3,6 @@
     margin: 60px auto;
 }
 
-.home-container .home-header-container h1 {
-    font-size: 48px;
-    text-align: center;
-}
-
 .home-container .home-card-container {
     display: flex;
     flex-wrap: wrap;

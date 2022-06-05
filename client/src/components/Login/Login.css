@@ -14,12 +14,6 @@
     width: 100%;
 }
 
-.login-container form h1 {
-    text-align: center;
-    font-size: 48px;
-    text-transform: uppercase;
-}
-
 .login-container form label {
     margin-top: 20px;
     margin-bottom: 5px;

@@ -38,6 +38,7 @@ function Verify() {
                 <button type='button'>Search</button>
             </div>
 
+            {/* TO DO - create a condition for the message generation */}
             {true ? successMessage : errorMessage}
         </div>
     );
