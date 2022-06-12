@@ -1,4 +1,4 @@
-import './Home.css';
+import './Home.scss';
 import { Link } from 'react-router-dom';
 import arrow from '../../assets/icons/arrow.svg';
 

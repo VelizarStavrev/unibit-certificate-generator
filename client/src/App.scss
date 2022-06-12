@@ -7,14 +7,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.App main.main-template-component {
-    height: auto;
-}
-
-.App main.main-verify-component {
-    height: 1px;
+    
+    &.main-template-component {
+        height: auto;
+    }
+    
+    &.main-verify-component {
+        height: 1px;
+    }
 }
 
 h1 {

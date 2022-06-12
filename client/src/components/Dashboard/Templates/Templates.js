@@ -1,4 +1,4 @@
-import './Templates.css';
+import './Templates.scss';
 import { Link } from 'react-router-dom';
 import viewIcon from '../../../assets/icons/view.svg';
 import editIcon from '../../../assets/icons/edit.svg';
@@ -6,7 +6,7 @@ import deleteIcon from '../../../assets/icons/delete.svg';
 
 function Templates() {
     return (
-        <div className='dashboard-container'>
+        <div className='dashboard-container-templates'>
             <div className='dashboard-search-and-nav'>
                 <input className='dashboard-search' placeholder='Search . . .' />
 

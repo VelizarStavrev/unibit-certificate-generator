@@ -1,4 +1,4 @@
-import './Template.css';
+import './Template.scss';
 import { useState, useEffect, useContext } from 'react';
 import mainClass from '../../contexts/mainClassContext';
 import editIcon from '../../assets/icons/edit.svg';
@@ -248,6 +248,10 @@ function Template() {
         let fieldList = structuredClone(currentFieldList);
         delete fieldList[fieldId];
         setCurrentFieldList(fieldList);
+        setFieldSettingsMenuDisplay('hidden');
+
+        // TO DO - check if deleted is active if it is - close it
+        // TO DO - or maybe add active that doesn't allow the delete button to be clicked on the active item
     }
 
     function editField(fieldId) {

@@ -1,4 +1,4 @@
-import './Verify.css';
+import './Verify.scss';
 import { useEffect, useContext } from 'react';
 import mainClass from '../../contexts/mainClassContext';
 import { Link } from 'react-router-dom';

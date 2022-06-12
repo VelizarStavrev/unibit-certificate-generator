@@ -1,4 +1,4 @@
-import './Documentation.css';
+import './Documentation.scss';
 import { useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 

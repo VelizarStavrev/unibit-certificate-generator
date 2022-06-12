@@ -1,4 +1,4 @@
-import './Reset.css';
+import './Reset.scss';
 import { Link } from 'react-router-dom';
 
 function Reset() {

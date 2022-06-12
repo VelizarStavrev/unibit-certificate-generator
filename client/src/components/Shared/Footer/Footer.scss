@@ -1,0 +1,39 @@
+footer {
+    padding: 20px 0;
+    box-shadow: var(--box-shadow-top);
+    
+    .footer-text-and-link-container {
+        max-width: 1040px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        ul {
+            display: flex;
+            list-style: none;
+            position: absolute;
+            right: 0;
+            
+            li {
+                margin-right: 20px;
+                height: 20px;
+
+                a {
+                    color: var(--secondary-color);
+                    text-decoration: none;
+                    display: inline-block;
+                    
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+                
+                &:last-child {
+                    margin-right: 0px;
+                }
+            }
+        }
+    }
+}
