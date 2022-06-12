@@ -7,7 +7,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 1px; /* Required to be able to get width 100% on children */
+}
+
+.App main.main-template-component {
+    height: auto;
+}
+
+.App main.main-verify-component {
+    height: 1px;
 }
 
 h1 {

@@ -1,6 +1,10 @@
 import './App.css';
 
+import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+
+// Contexts
+import mainClass from './contexts/mainClassContext';
 
 // Components
 // Shared
@@ -23,33 +27,45 @@ import Reset from './components/Reset/Reset';
 import Certificates from './components/Dashboard/Certificates/Certificates';
 import Templates from './components/Dashboard/Templates/Templates';
 
+import Template from './components/Template/Template';
+
 function App() {
+  const [currentClass, setClass] = useState(mainClass);
+  const value = { currentClass, setClass };
+
   return (
     <div className='App'>
       <Header />
       
-      <main>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/verify' element={<Verify />} />
-            <Route path='/documentation' element={<Documentation />}>
-              <Route path=':section' element={<Documentation />}>
-                <Route path=':topic' element={<Documentation />} />
+      <mainClass.Provider value={value}>
+        <main className={currentClass}>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/verify' element={<Verify />} />
+              <Route path='/documentation' element={<Documentation />}>
+                <Route path=':section' element={<Documentation />}>
+                  <Route path=':topic' element={<Documentation />} />
+                </Route>
               </Route>
-            </Route>
-            <Route path='/contacts' element={<Contacts />} />
+              <Route path='/contacts' element={<Contacts />} />
 
-            <Route path='/register' element={<Register />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/password-reset' element={<Reset />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/password-reset' element={<Reset />} />
 
-            <Route path='/dashboard' element={<Navigate to='/dashboard/certificates' />} />
-            <Route path='/dashboard/certificates' element={<Certificates />} />
-            <Route path='/dashboard/templates' element={<Templates />} />
+              <Route path='/dashboard' element={<Navigate to='/dashboard/certificates' />} />
+              <Route path='/certificates' element={<Navigate to='/dashboard/certificates' />} />
+              <Route path='/templates' element={<Navigate to='/dashboard/templates' />} />
+              <Route path='/dashboard/certificates' element={<Certificates />} />
+              <Route path='/dashboard/templates' element={<Templates />} />
 
-            {/* <Route path='*' element={<404 />} /> */}
-          </Routes>
-      </main>
+              <Route path='/dashboard/template' element={<Template />} />
+              <Route path='/template' element={<Navigate to='/dashboard/template' />} />
+              
+              {/* <Route path='*' element={<404 />} /> */}
+            </Routes>
+        </main>
+      </mainClass.Provider>
 
       <Footer />
     </div>

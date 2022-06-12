@@ -1,4 +1,6 @@
 import './Verify.css';
+import { useEffect, useContext } from 'react';
+import mainClass from '../../contexts/mainClassContext';
 import { Link } from 'react-router-dom';
 import successIcon from '../../assets/icons/success.svg';
 import errorIcon from '../../assets/icons/error.svg';
@@ -28,6 +30,12 @@ const successMessage = successMessageFunc();
 const errorMessage = errorMessageFunc();
 
 function Verify() {
+    const { setClass } = useContext(mainClass);
+
+    useEffect(() => {
+        setClass('main-verify-component');
+    }, [setClass]);
+
     return (
         <div className='verify-container'>
             <p className='verify-help-text'>Please enter a certificate code to validate it’s existence.</p>
