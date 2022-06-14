@@ -19,7 +19,6 @@ function Template() {
     function saveTemplate() {
         // TO DO - get the data with a request
         // TO DO - set the template orientation in the saved data
-        // TO DO - make specific fields to have the option to be editable
         // TO DO - add dropdown field options for specific fields
         // TO DO - add field unit clarity (is it px, %, none, etc.)
         // TO DO - add field dropdowns for unit selection
@@ -37,7 +36,7 @@ function Template() {
     }
 
     // Initial field structure and list
-    // TO DO - get the saved fields
+    // TO DO - Get the saved fields from the BE
     const initialFieldStructure = {};
 
     const [currentFieldList, setCurrentFieldList] = useState(initialFieldStructure); // empty object or field list
@@ -88,47 +87,72 @@ function Template() {
                 currentProperties = {
                     'zIndex': {
                         label: 'Layer position',
-                        value: zIndex
+                        value: zIndex,
+                        type: 'text'
                     },
                     'content': {
                         label: 'Text content',
-                        value: 'Example text'
+                        value: 'Example text',
+                        type: 'text'
                     },
                     'fontSize': {
                         label: 'Font size',
-                        value: '16'
+                        value: '16',
+                        type: 'text'
                     },
                     'textAlign': {
                         label: 'Text alignment',
-                        value: 'Left'
+                        value: 'Left',
+                        type: 'select',
+                        options: ['Left', 'Center', 'Right']
                     },
                     'transform': {
                         label: 'Rotation',
-                        value: '0'
+                        value: '0',
+                        type: 'text'
                     },
                     'color': {
                         label: 'Text color',
-                        value: '#000000'
+                        value: '#000000',
+                        type: 'text'
                     },
                     'fontWeight': {
                         label: 'Font weight',
-                        value: 'Bold'
+                        value: 'Normal',
+                        type: 'select',
+                        options: ['Normal', 'Bold']
                     },
                     'fontStyle': {
                         label: 'Font style',
-                        value: 'Italic'
+                        value: 'Normal',
+                        type: 'select',
+                        options: ['Normal', 'Italic']
+                    },
+                    'textDecoration': {
+                        label: 'Text decoration',
+                        value: 'None',
+                        type: 'select',
+                        options: ['None', 'Underline', 'Line-through']
                     },
                     'maxWidth': {
                         label: 'Max width',
-                        value: '250'
+                        value: '250',
+                        type: 'text'
                     },
                     'left': {
                         label: 'Position X',
-                        value: '50'
+                        value: '50',
+                        type: 'text'
                     },
                     'top': {
                         label: 'Position Y',
-                        value: '50'
+                        value: '50',
+                        type: 'text'
+                    },
+                    'editable': {
+                        label: 'Editable',
+                        value: false,
+                        type: 'boolean'
                     }
                 }
                 break;
@@ -137,31 +161,43 @@ function Template() {
                 currentProperties = {
                     'zIndex': {
                         label: 'Layer position',
-                        value: zIndex
+                        value: zIndex,
+                        type: 'text'
                     },
                     'url': {
                         label: 'Image link',
-                        value: '/url'
+                        value: '/url',
+                        type: 'text'
                     },
                     'height': {
                         label: 'Image height',
-                        value: '250px'
+                        value: '250px',
+                        type: 'text'
                     },
                     'width': {
                         label: 'Image width',
-                        value: '500px'
+                        value: '500px',
+                        type: 'text'
                     },
                     'transform': {
                         label: 'Rotation',
-                        value: '0'
+                        value: '0',
+                        type: 'text'
                     },
                     'left': {
                         label: 'Position X',
-                        value: '50'
+                        value: '50',
+                        type: 'text'
                     },
                     'top': {
                         label: 'Position Y',
-                        value: '50'
+                        value: '50',
+                        type: 'text'
+                    },
+                    'editable': {
+                        label: 'Editable',
+                        value: false,
+                        type: 'boolean'
                     }
                 };
                 break;
@@ -170,47 +206,72 @@ function Template() {
                 currentProperties = {
                     'zIndex': {
                         label: 'Layer position',
-                        value: zIndex
+                        value: zIndex,
+                        type: 'text'
                     },
                     'content': {
                         label: 'Text content',
-                        value: 'Example text'
+                        value: 'Example text',
+                        type: 'text'
                     },
                     'url': {
                         label: 'Link',
-                        value: '/url'
+                        value: '/url',
+                        type: 'text'
                     },
                     'fontSize': {
                         label: 'Font size',
-                        value: '16'
+                        value: '16',
+                        type: 'text'
                     },
                     'textAlign': {
                         label: 'Text alignment',
-                        value: 'Left'
+                        value: 'Left',
+                        type: 'select',
+                        options: ['Left', 'Center', 'Right']
                     },
                     'transform': {
                         label: 'Rotation',
-                        value: '0'
+                        value: '0',
+                        type: 'text'
                     },
                     'color': {
                         label: 'Text color',
-                        value: '#4287f5'
+                        value: '#4287f5',
+                        type: 'text'
                     },
                     'fontWeight': {
                         label: 'Font weight',
-                        value: 'Bold'
+                        value: 'Normal',
+                        type: 'select',
+                        options: ['Normal', 'Bold']
                     },
                     'fontStyle': {
                         label: 'Font style',
-                        value: 'italic'
+                        value: 'Italic',
+                        type: 'select',
+                        options: ['Normal', 'Italic']
+                    },
+                    'textDecoration': {
+                        label: 'Text decoration',
+                        value: 'Underline',
+                        type: 'select',
+                        options: ['None', 'Underline', 'Line-through']
                     },
                     'left': {
                         label: 'Position X',
-                        value: '50'
+                        value: '50',
+                        type: 'text'
                     },
                     'top': {
                         label: 'Position Y',
-                        value: '50'
+                        value: '50',
+                        type: 'text'
+                    },
+                    'editable': {
+                        label: 'Editable',
+                        value: false,
+                        type: 'boolean'
                     }
                 };
                 break;
@@ -243,24 +304,24 @@ function Template() {
 
     const [fieldSettingsMenuDisplay, setFieldSettingsMenuDisplay] = useState('hidden'); // hidden or ''
     const [fieldSettingsMenuValues, setFieldSettingsMenuValues] = useState(initialFieldSettingsMenuValues); // object with values or ''
+    const [currentFieldListActive, setCurrentFieldListActive] = useState(initialFieldSettingsMenuValues); // field id or ''
 
     function deleteField(fieldId) {
         let fieldList = structuredClone(currentFieldList);
         delete fieldList[fieldId];
         setCurrentFieldList(fieldList);
         setFieldSettingsMenuDisplay('hidden');
-
-        // TO DO - check if deleted is active if it is - close it
-        // TO DO - or maybe add active that doesn't allow the delete button to be clicked on the active item
     }
 
     function editField(fieldId) {
         setFieldSettingsMenuValues(currentFieldList[fieldId]);
+        setCurrentFieldListActive(fieldId);
         setFieldSettingsMenuDisplay('');
         setFieldAddMenuDisplay('hidden');
     }
 
     function updateField(fieldId, fieldPropertyName, fieldPropertyValue) {
+        console.log(fieldId, fieldPropertyName, fieldPropertyValue);
         let fieldList = structuredClone(currentFieldList);
         fieldList[fieldId].properties[fieldPropertyName].value = fieldPropertyValue;
         setCurrentFieldList(fieldList);
@@ -272,9 +333,7 @@ function Template() {
         let currentProperties = structuredClone(properties);
 
         for (let property in currentProperties) {
-            // let currentPropertyValue = currentProperties[property].value;
-
-            if (property === 'content' || property === 'url') {
+            if (['content', 'url', 'editable'].includes(property)) {
                 continue;
             }
 
@@ -366,7 +425,7 @@ function Template() {
                                         case 'Link':
                                             return (
                                                 <div draggable='true' key={key} style={currentFieldStyleSettings}>
-                                                    <a style={{fontSize: 'inherit', color: 'inherit'}} href={value['properties'].url.value}>{value['properties'].content.value}</a>
+                                                    <a style={{fontSize: 'inherit', color: 'inherit', textDecoration: 'inherit'}} href={value['properties'].url.value}>{value['properties'].content.value}</a>
                                                 </div>
                                             );
 
@@ -416,7 +475,7 @@ function Template() {
                         <div id='field-list' className='template-certificate-field-list-content'>
                             { Object.keys(currentFieldList).length > 0 ? Object.entries(currentFieldList).map(([key, value]) => {
                                 return (
-                                    <div className='template-certificate-field' key={key}>
+                                    <div className={'template-certificate-field ' + (currentFieldListActive === key ? 'template-certificate-field-active' : '')} key={key}>
                                         {value.type}
 
                                         <div className='template-certificate-field-buttons'>
@@ -432,6 +491,7 @@ function Template() {
                             <button id='new-field-button' type='button' className='button-primary' onClick={() => {
                                         fieldAddMenuDisplay ? setFieldAddMenuDisplay('') : setFieldAddMenuDisplay('hidden');
                                         setFieldSettingsMenuDisplay('hidden');
+                                        setCurrentFieldListActive('');
                                     }
                                 }>Add field</button>
                         </div>
@@ -445,17 +505,67 @@ function Template() {
 
                         <div className='template-certificate-field-list-content'>
                             { Object.keys(fieldSettingsMenuValues.properties).length > 0 ? Object.entries(fieldSettingsMenuValues.properties).map(([key, value]) => {
-                                return (
-                                    <div className='template-certificate-field-settings' key={key}>
-                                        <label>{value.label}</label>
-                                        <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
-                                    </div>
-                                );
+                                switch (value.type) {
+                                        case 'text':
+                                            return (
+                                                <div className='template-certificate-field-settings' key={key}>
+                                                    <label>{value.label}</label>
+                                                    <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
+                                                </div>
+                                            );
+
+                                        case 'select':
+                                            return (
+                                                <div className='template-certificate-field-settings' key={key}>
+                                                    <label>{value.label}</label>
+                                                    <select value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)}>
+                                                        {value.options.map(currentOption => {
+                                                            return (
+                                                                <option 
+                                                                    key={currentOption} 
+                                                                    value={currentOption} 
+                                                                >
+                                                                    {currentOption}
+                                                                </option>
+                                                            );
+                                                        })}
+                                                    </select>
+                                                </div>
+                                            );
+
+                                        case 'boolean':
+                                            return (
+                                                <div className='template-certificate-field-settings' key={key}>
+                                                    <label>{value.label}</label>
+                                                    <div className='template-certificate-field-settings-boolean-container'>
+                                                        <label htmlFor={'trueBooleanRadioFor' + key} className={value.value ? 'template-certificate-field-settings-boolean-active' : ''}>
+                                                            <input type='radio' name={'BooleanRadioFor' + key} id={'trueBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, true)} 
+                                                                checked={value.value ? true : false}
+                                                            />
+                                                            True
+                                                        </label>
+
+                                                        <label htmlFor={'falseBooleanRadioFor' + key} className={value.value ? '' : 'template-certificate-field-settings-boolean-active'}>
+                                                            <input type='radio' name={'BooleanRadioFor' + key} id={'falseBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, false)} 
+                                                                checked={value.value ? false : true}
+                                                            />
+                                                            False
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            );
+
+                                        default:
+                                            return null;
+                                }
                             }) : <p className='template-certificate-field-text'>An error occured.</p>}
                         </div>
 
                         <div className='template-certificate-field-list-button'>
-                            <button id='save-field-button' type='button' className='button-primary' onClick={() => setFieldSettingsMenuDisplay('hidden')}>Done</button>
+                            <button id='save-field-button' type='button' className='button-primary' onClick={() => {
+                                setFieldSettingsMenuDisplay('hidden');
+                                setCurrentFieldListActive('');
+                            }}>Done</button>
                         </div>
                     </div>
 
