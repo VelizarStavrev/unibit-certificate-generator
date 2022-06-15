@@ -14,14 +14,12 @@ function Template() {
 
     // Template buttons
     // Used to change the state of the certificate orientation
+    // TO DO - get the data with a request
+    // TO DO - set the template orientation from the received data from the BE
     const [certificateOrientation, setCertificateOrientation] = useState('vertical'); // vertical or horizontal
 
     function saveTemplate() {
         // TO DO - get the data with a request
-        // TO DO - set the template orientation in the saved data
-        // TO DO - add dropdown field options for specific fields
-        // TO DO - add field unit clarity (is it px, %, none, etc.)
-        // TO DO - add field dropdowns for unit selection
         console.log('Save the template!');
     }
 
@@ -98,7 +96,8 @@ function Template() {
                     'fontSize': {
                         label: 'Font size',
                         value: '16',
-                        type: 'text'
+                        type: 'text',
+                        unit: 'px'
                     },
                     'textAlign': {
                         label: 'Text alignment',
@@ -109,7 +108,8 @@ function Template() {
                     'transform': {
                         label: 'Rotation',
                         value: '0',
-                        type: 'text'
+                        type: 'text',
+                        unit: 'deg'
                     },
                     'color': {
                         label: 'Text color',
@@ -137,17 +137,20 @@ function Template() {
                     'maxWidth': {
                         label: 'Max width',
                         value: '250',
-                        type: 'text'
+                        type: 'text',
+                        unit: 'px'
                     },
                     'left': {
                         label: 'Position X',
                         value: '50',
-                        type: 'text'
+                        type: 'text',
+                        unit: '%'
                     },
                     'top': {
                         label: 'Position Y',
                         value: '50',
-                        type: 'text'
+                        type: 'text',
+                        unit: '%'
                     },
                     'editable': {
                         label: 'Editable',
@@ -171,28 +174,35 @@ function Template() {
                     },
                     'height': {
                         label: 'Image height',
-                        value: '250px',
-                        type: 'text'
+                        value: '250',
+                        type: 'text',
+                        unit: 'px',
+                        units: ['px', '%']
                     },
                     'width': {
                         label: 'Image width',
-                        value: '500px',
-                        type: 'text'
+                        value: '500',
+                        type: 'text',
+                        unit: 'px',
+                        units: ['px', '%']
                     },
                     'transform': {
                         label: 'Rotation',
                         value: '0',
-                        type: 'text'
+                        type: 'text',
+                        unit: 'deg'
                     },
                     'left': {
                         label: 'Position X',
                         value: '50',
-                        type: 'text'
+                        type: 'text',
+                        unit: '%'
                     },
                     'top': {
                         label: 'Position Y',
                         value: '50',
-                        type: 'text'
+                        type: 'text',
+                        unit: '%'
                     },
                     'editable': {
                         label: 'Editable',
@@ -222,7 +232,8 @@ function Template() {
                     'fontSize': {
                         label: 'Font size',
                         value: '16',
-                        type: 'text'
+                        type: 'text',
+                        unit: 'px'
                     },
                     'textAlign': {
                         label: 'Text alignment',
@@ -233,7 +244,8 @@ function Template() {
                     'transform': {
                         label: 'Rotation',
                         value: '0',
-                        type: 'text'
+                        type: 'text',
+                        unit: 'deg'
                     },
                     'color': {
                         label: 'Text color',
@@ -261,12 +273,14 @@ function Template() {
                     'left': {
                         label: 'Position X',
                         value: '50',
-                        type: 'text'
+                        type: 'text',
+                        unit: '%'
                     },
                     'top': {
                         label: 'Position Y',
                         value: '50',
-                        type: 'text'
+                        type: 'text',
+                        unit: '%'
                     },
                     'editable': {
                         label: 'Editable',
@@ -321,9 +335,15 @@ function Template() {
     }
 
     function updateField(fieldId, fieldPropertyName, fieldPropertyValue) {
-        console.log(fieldId, fieldPropertyName, fieldPropertyValue);
         let fieldList = structuredClone(currentFieldList);
         fieldList[fieldId].properties[fieldPropertyName].value = fieldPropertyValue;
+        setCurrentFieldList(fieldList);
+        setFieldSettingsMenuValues(fieldList[fieldId]);
+    }
+    
+    function updateFieldUnit(fieldId, fieldPropertyName, fieldUnitValue) {
+        let fieldList = structuredClone(currentFieldList);
+        fieldList[fieldId].properties[fieldPropertyName].unit = fieldUnitValue;
         setCurrentFieldList(fieldList);
         setFieldSettingsMenuValues(fieldList[fieldId]);
     }
@@ -333,7 +353,7 @@ function Template() {
         let currentProperties = structuredClone(properties);
 
         for (let property in currentProperties) {
-            if (['content', 'url', 'editable'].includes(property)) {
+            if (['content', 'url', 'editable', 'unit', 'units'].includes(property)) {
                 continue;
             }
 
@@ -341,16 +361,8 @@ function Template() {
                 currentProperties[property].value = 'rotate(' + currentProperties[property].value + 'deg)';
             }
 
-            if (property === 'left' || property === 'top') {
-                currentProperties[property].value = currentProperties[property].value + '%';
-            }
-
-            if (property === 'maxWidth') {
-                currentProperties[property].value = currentProperties[property].value + 'px';
-            }
-
-            if (property === 'fontSize') {
-                currentProperties[property].value = currentProperties[property].value + 'px';
+            if (['left', 'top', 'maxWidth', 'fontSize', 'height', 'width'].includes(property)) {
+                currentProperties[property].value = currentProperties[property].value + currentProperties[property].unit;
             }
         }
 
@@ -391,6 +403,7 @@ function Template() {
 
             <div className='template-certificate-and-fields-container'>
                 <div className='template-certificate-main-container'>
+                    {/* TO DO - ADD DRAG FUNCTIONALITY */}
                     {/* The following code is used for a better FE display */}
                     <div className='template-certificate-container-FE'>
                         <div className={certificateOrientation === 'vertical' ? 'template-certificate-container-vertical' : 'template-certificate-container-horizontal'}>
@@ -507,6 +520,37 @@ function Template() {
                             { Object.keys(fieldSettingsMenuValues.properties).length > 0 ? Object.entries(fieldSettingsMenuValues.properties).map(([key, value]) => {
                                 switch (value.type) {
                                         case 'text':
+                                            if (value.unit) {
+                                                if (value.units) {
+                                                    return (
+                                                        <div className='template-certificate-field-settings' key={key}>
+                                                            <label>{value.label}</label>
+                                                            <div className='template-certificate-field-settings-input-with-unit template-certificate-field-settings-input-with-unit-selectable'>
+                                                                <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
+                                                                {value.units.map(currentUnit => {
+                                                                    return (
+                                                                        <div className={'template-certificate-field-settings-unit ' + (value.unit === currentUnit ? 'template-certificate-field-settings-unit-active' : '')} 
+                                                                            key={currentUnit} onClick={() => updateFieldUnit(fieldSettingsMenuValues.id, key, currentUnit)}>
+                                                                            {currentUnit}
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+
+                                                return (
+                                                    <div className='template-certificate-field-settings' key={key}>
+                                                        <label>{value.label}</label>
+                                                        <div className='template-certificate-field-settings-input-with-unit'>
+                                                            <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
+                                                            <div className='template-certificate-field-settings-unit'>{value.unit}</div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            }
+
                                             return (
                                                 <div className='template-certificate-field-settings' key={key}>
                                                     <label>{value.label}</label>

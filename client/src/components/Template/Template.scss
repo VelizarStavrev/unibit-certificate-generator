@@ -292,6 +292,7 @@
                         
                         label {
                             font-weight: bold;
+                            margin-left: 5px;
                         }
                         
                         input {
@@ -302,6 +303,7 @@
                             box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
                             border-radius: 10px;
                             font-size: 16px;
+                            outline: none;
                         }
 
                         select {
@@ -348,6 +350,42 @@
                             .template-certificate-field-settings-boolean-active {
                                 background-color: var(--secondary-color);
                                 color: var(--main-color);
+                            }
+                        }
+
+                        .template-certificate-field-settings-input-with-unit {
+                            display: flex;
+                            width: 100%;
+                            margin-top: 5px;
+                            border: none;
+                            box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
+                            border-radius: 10px;
+                            font-size: 16px;
+
+                            input {
+                                margin: 0;
+                                box-shadow: none;
+                            }
+
+                            .template-certificate-field-settings-unit {
+                                margin: 10px 0;
+                                padding: 0 10px;
+                                border-left: 1px solid var(--table-border-color);
+                                color: var(--table-border-color);
+                            }
+
+                            &.template-certificate-field-settings-input-with-unit-selectable {
+                                .template-certificate-field-settings-unit {
+                                    cursor: pointer;
+
+                                    &:hover {
+                                        color: var(--secondary-color);
+                                    }
+                                }
+
+                                .template-certificate-field-settings-unit-active {
+                                    color: var(--secondary-color);
+                                }
                             }
                         }
                     }
