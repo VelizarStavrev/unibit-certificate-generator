@@ -16,6 +16,7 @@ function Template() {
     // Used to change the state of the certificate orientation
     // TO DO - get the data with a request
     // TO DO - set the template orientation from the received data from the BE
+    // TO DO - add auto generated fields
     const [certificateOrientation, setCertificateOrientation] = useState('vertical'); // vertical or horizontal
 
     function saveTemplate() {
@@ -349,6 +350,7 @@ function Template() {
     }
 
     // Certificate display functionality
+    // TO DO - add drag functionality
     function getFieldStyles(properties) {
         let currentProperties = structuredClone(properties);
 
@@ -423,21 +425,27 @@ function Template() {
                                     switch (value.type) {
                                         case 'Text':
                                             return (
-                                                <div draggable='true' key={key} style={currentFieldStyleSettings}>
+                                                <div draggable='true' key={key} style={currentFieldStyleSettings} 
+                                                    onClick={() => editField(key)} className={currentFieldListActive === key ? 'active' : ''}
+                                                    >
                                                     {value['properties'].content.value}
                                                 </div>
                                             );
 
                                         case 'Image':
                                             return (
-                                                <div draggable='true' key={key} style={currentFieldStyleSettings}>
+                                                <div draggable='true' key={key} style={currentFieldStyleSettings} 
+                                                    onClick={() => editField(key)} className={currentFieldListActive === key ? 'active' : ''}
+                                                    >
                                                     <img style={{height: 'inherit', width: 'inherit'}} src={value['properties'].url.value} alt='' />
                                                 </div>
                                             );
 
                                         case 'Link':
                                             return (
-                                                <div draggable='true' key={key} style={currentFieldStyleSettings}>
+                                                <div draggable='true' key={key} style={currentFieldStyleSettings} 
+                                                    onClick={() => editField(key)} className={currentFieldListActive === key ? 'active' : ''}
+                                                    >
                                                     <a style={{fontSize: 'inherit', color: 'inherit', textDecoration: 'inherit'}} href={value['properties'].url.value}>{value['properties'].content.value}</a>
                                                 </div>
                                             );
