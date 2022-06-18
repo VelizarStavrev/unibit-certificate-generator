@@ -1,5 +1,5 @@
 import './Template.scss';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import mainClass from '../../contexts/mainClassContext';
 import editIcon from '../../assets/icons/edit.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
@@ -350,7 +350,20 @@ function Template() {
     }
 
     // Certificate display functionality
-    // TO DO - add drag functionality
+    const certificateContainerRef = useRef(null);
+    const [certificateContainerHeight, setCertificateContainerHeight] = useState(0);
+    const [certificateContainerWidth, setCertificateContainerWidth] = useState(0);
+    const [certificateContainerHeightOffset, setCertificateContainerHeightOffset] = useState(0);
+    const [certificateContainerWidthOffset, setCertificateContainerWidthOffset] = useState(0);
+    const [certificateContainerScrollPosition, setCertificateContainerScrollPosition] = useState(0);
+
+    useEffect(() => {
+        setCertificateContainerHeight(certificateContainerRef.current.offsetHeight);
+        setCertificateContainerWidth(certificateContainerRef.current.offsetWidth);
+        setCertificateContainerHeightOffset(certificateContainerRef.current.offsetTop);
+        setCertificateContainerWidthOffset(certificateContainerRef.current.offsetLeft);
+    }, []);
+
     function getFieldStyles(properties) {
         let currentProperties = structuredClone(properties);
 
@@ -380,6 +393,24 @@ function Template() {
         return finalCSSObject;
     }
 
+    function updateFieldPosition(event, fieldId) {
+        const fieldEndX = event.pageX;
+        const fieldEndY = event.pageY;
+        const containerHeight = certificateContainerHeight;
+        const containerHeightOffset = certificateContainerHeightOffset;
+        const containerWidth = certificateContainerWidth;
+        const containerWidthOffset = certificateContainerWidthOffset;
+
+        const fieldX = ((((fieldEndX + certificateContainerScrollPosition) - containerWidthOffset) / containerWidth) * 100).toFixed(2);
+        const fieldY = (((fieldEndY - containerHeightOffset) / containerHeight) * 100).toFixed(2);
+
+        let fieldList = structuredClone(currentFieldList);
+        fieldList[fieldId].properties.left.value = fieldX;
+        fieldList[fieldId].properties.top.value = fieldY;
+        setCurrentFieldList(fieldList);
+        setFieldSettingsMenuValues(fieldList[fieldId]);
+    }
+
     return (
         <div className='template-container'>
             <h1>TEMPLATE NAME</h1>
@@ -405,12 +436,11 @@ function Template() {
 
             <div className='template-certificate-and-fields-container'>
                 <div className='template-certificate-main-container'>
-                    {/* TO DO - ADD DRAG FUNCTIONALITY */}
                     {/* The following code is used for a better FE display */}
-                    <div className='template-certificate-container-FE'>
+                    <div className='template-certificate-container-FE' onScroll={(e) => setCertificateContainerScrollPosition(e.target.scrollLeft)}>
                         <div className={certificateOrientation === 'vertical' ? 'template-certificate-container-vertical' : 'template-certificate-container-horizontal'}>
                             {/* The following code is sent entirely to the BE */}
-                            <div id='certificate-container' className='template-certificate-container' style={
+                            <div id='certificate-container' className='template-certificate-container' ref={certificateContainerRef} style={
                                 {
                                     width: '100%',
                                     height: '100%',
@@ -427,6 +457,7 @@ function Template() {
                                             return (
                                                 <div draggable='true' key={key} style={currentFieldStyleSettings} 
                                                     onClick={() => editField(key)} className={currentFieldListActive === key ? 'active' : ''}
+                                                    onDragEnd={(e) => updateFieldPosition(e, key)}
                                                     >
                                                     {value['properties'].content.value}
                                                 </div>
@@ -436,6 +467,7 @@ function Template() {
                                             return (
                                                 <div draggable='true' key={key} style={currentFieldStyleSettings} 
                                                     onClick={() => editField(key)} className={currentFieldListActive === key ? 'active' : ''}
+                                                    onDragEnd={(e) => updateFieldPosition(e, key)}
                                                     >
                                                     <img style={{height: 'inherit', width: 'inherit'}} src={value['properties'].url.value} alt='' />
                                                 </div>
@@ -445,6 +477,7 @@ function Template() {
                                             return (
                                                 <div draggable='true' key={key} style={currentFieldStyleSettings} 
                                                     onClick={() => editField(key)} className={currentFieldListActive === key ? 'active' : ''}
+                                                    onDragEnd={(e) => updateFieldPosition(e, key)}
                                                     >
                                                     <a style={{fontSize: 'inherit', color: 'inherit', textDecoration: 'inherit'}} href={value['properties'].url.value}>{value['properties'].content.value}</a>
                                                 </div>
@@ -463,14 +496,22 @@ function Template() {
                     <div className='template-certificate-button-container'>
                         <div className='template-certificate-button-container-radio'>
                             <label htmlFor='orientation-portrait' className='template-radio-button-container'>
-                                <input type='radio' name='orientation' id='orientation-portrait' value='portrait' onChange={() => setCertificateOrientation('vertical')}
+                                <input type='radio' name='orientation' id='orientation-portrait' value='portrait' onChange={() => {
+                                        setCertificateOrientation('vertical');
+                                        setCertificateContainerHeight(certificateContainerRef.current.offsetWidth);
+                                        setCertificateContainerWidth(certificateContainerRef.current.offsetHeight);
+                                    }}
                                     checked={certificateOrientation === 'vertical' ? true : false} />
                                 <span className='checkmark'></span>
                                 Portrait
                             </label>
 
                             <label htmlFor='orientation-landscape' className='template-radio-button-container'>
-                                <input type='radio' name='orientation' id='orientation-landscape' value='landscape' onChange={() => setCertificateOrientation('horizontal')}
+                                <input type='radio' name='orientation' id='orientation-landscape' value='landscape' onChange={() => {
+                                        setCertificateOrientation('horizontal');
+                                        setCertificateContainerHeight(certificateContainerRef.current.offsetWidth);
+                                        setCertificateContainerWidth(certificateContainerRef.current.offsetHeight);
+                                    }}
                                     checked={certificateOrientation === 'horizontal' ? true : false} />
                                 <span className='checkmark'></span>
                                 Landscape
