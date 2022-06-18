@@ -152,50 +152,6 @@
             .template-certificate-button-container {
                 display: flex;
                 justify-content: space-between;
-                
-                button {
-                    border: none;
-                    background-color: transparent;
-                    padding: 10px;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: background-color 0.25s;
-                    margin-right: 20px;
-                    box-shadow: var(--box-shadow-card);
-                    text-transform: uppercase;
-                    font-weight: bold;
-                    
-                    &:last-child {
-                        margin-right: 0px;
-                    }
-                }
-                
-                .button-primary {
-                    background-color: var(--secondary-color);
-                    color: var(--main-color);
-                    
-                    &:hover {
-                        background-color: var(--secondary-color-hover);
-                    }
-                }
-                
-                .button-secondary {
-                    background-color: var(--main-color);
-                    color: var(--secondary-color);
-                    
-                    &:hover {
-                        background-color: var(--main-color-hover);
-                    }   
-                }
-                
-                .button-error {
-                    background-color: var(--error-color);
-                    color: var(--main-color);
-                    
-                    &:hover {
-                        background-color: var(--error-color-hover);
-                    }
-                }
             }
         }
 
@@ -397,35 +353,5 @@
                 }
             }
         }
-    }
-}
-
-// Shared
-.button-primary,
-.button-secondary {
-    border: none;
-    background-color: transparent;
-    padding: 10px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
-    transition: background-color 0.25s;
-}
-
-.button-primary {
-    background-color: var(--secondary-color);
-    color: var(--main-color);
-
-    &:hover {
-        background-color: var(--secondary-color-hover);
-    }
-}
-
-.button-secondary {
-    background-color: var(--main-color);
-    color: var(--secondary-color);
-    
-    &:hover {
-        background-color: var(--main-color-hover);
     }
 }

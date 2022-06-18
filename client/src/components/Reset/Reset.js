@@ -1,5 +1,6 @@
 import './Reset.scss';
-import { Link } from 'react-router-dom';
+import Button from '../Shared/Button/Button';
+import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 
 function Reset() {
     return (
@@ -11,10 +12,9 @@ function Reset() {
                 <input type='text' name='username' />
                 <p className='reset-error'>Invalid username or password!</p>
 
-                <button className='reset-button' type='button'>Reset</button>
-                <Link className='reset-link' to='/register'>Don't have an account?</Link>
-
-                <Link className='reset-button-link' to='/login'>Login</Link>
+                <Button buttonText='Reset' buttonType='Primary' buttonMarginTop='true' />
+                <ButtonLink buttonText="Don't have an account?" buttonLink='/register' buttonType='Link' />
+                <ButtonLink buttonText='Login' buttonLink='/login' buttonType='Secondary' buttonMarginTop='true' />
             </form>
         </div>
     );

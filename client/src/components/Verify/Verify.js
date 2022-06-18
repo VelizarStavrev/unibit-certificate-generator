@@ -1,9 +1,10 @@
 import './Verify.scss';
 import { useEffect, useContext } from 'react';
 import mainClass from '../../contexts/mainClassContext';
-import { Link } from 'react-router-dom';
 import successIcon from '../../assets/icons/success.svg';
 import errorIcon from '../../assets/icons/error.svg';
+import Button from '../Shared/Button/Button';
+import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 
 function successMessageFunc() {
     return (
@@ -11,7 +12,7 @@ function successMessageFunc() {
             <img src={successIcon} alt='' />
 
             <p>No certificates were found with the provided information.</p>
-            <p>You can review it at <Link className='verify-message-link' to='/certificate'>THIS LINK</Link>.</p>
+            <p>You can review it at <ButtonLink buttonText='THIS LINK' buttonLink='/certificate' buttonType='Link' />.</p>
         </div>
     );
 }
@@ -42,8 +43,8 @@ function Verify() {
 
             <div className='verify-search-container'>
                 <input className='verify-search' placeholder='Search . . .' />
-
-                <button type='button'>Search</button>
+                
+                <Button buttonText='Search' buttonType='Primary' buttonMarginLeft='true' />
             </div>
 
             {/* TO DO - create a condition for the message generation */}

@@ -1,5 +1,6 @@
 import './Register.scss';
-import { Link } from 'react-router-dom';
+import Button from '../Shared/Button/Button';
+import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 
 function Register() {
     return (
@@ -23,9 +24,8 @@ function Register() {
                 <input type='password' name='repassword' />
                 <p className='register-error'>Invalid username or password!</p>
                 
-                <button className='register-button' type='button'>Register</button>
-
-                <Link className='register-button-link' to='/login'>Login</Link>
+                <Button buttonText='Register' buttonType='Primary' buttonMarginTop='true' />
+                <ButtonLink buttonText='Login' buttonLink='/login' buttonType='Secondary' buttonMarginTop='true' />
             </form>
         </div>
     );

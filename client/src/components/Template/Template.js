@@ -3,6 +3,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import mainClass from '../../contexts/mainClassContext';
 import editIcon from '../../assets/icons/edit.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
+import Button from '../Shared/Button/Button';
 
 function Template() {
     // Set the class of the main containter to be for this specific page
@@ -519,9 +520,9 @@ function Template() {
                         </div>
     
                         <div className='template-certificate-button-container-button'>
-                            <button className='button-primary' type='button' onClick={saveTemplate}>Save template</button>
-                            <button className='button-secondary' type='button' onClick={resetTemplate}>Reset</button>
-                            <button className='button-error' type='button' onClick={deleteTemplate}>Delete</button>
+                            <Button buttonText='Save template' buttonType='Primary' buttonMarginRight='true' clickFunction={saveTemplate} />
+                            <Button buttonText='Reset' buttonType='Secondary' buttonMarginRight='true' clickFunction={resetTemplate} />
+                            <Button buttonText='Delete' buttonType='Error' clickFunction={deleteTemplate} />
                         </div>
                     </div>
                 </div>
@@ -550,12 +551,13 @@ function Template() {
                         </div>
 
                         <div className='template-certificate-field-list-button'>
-                            <button id='new-field-button' type='button' className='button-primary' onClick={() => {
-                                        fieldAddMenuDisplay ? setFieldAddMenuDisplay('') : setFieldAddMenuDisplay('hidden');
-                                        setFieldSettingsMenuDisplay('hidden');
-                                        setCurrentFieldListActive('');
-                                    }
-                                }>Add field</button>
+                            <Button buttonText='Add field' buttonType='Primary' 
+                                clickFunction={() => {
+                                    fieldAddMenuDisplay ? setFieldAddMenuDisplay('') : setFieldAddMenuDisplay('hidden');
+                                    setFieldSettingsMenuDisplay('hidden');
+                                    setCurrentFieldListActive('');
+                                }} 
+                            />
                         </div>
                     </div>
 
@@ -568,33 +570,22 @@ function Template() {
                         <div className='template-certificate-field-list-content'>
                             { Object.keys(fieldSettingsMenuValues.properties).length > 0 ? Object.entries(fieldSettingsMenuValues.properties).map(([key, value]) => {
                                 switch (value.type) {
-                                        case 'text':
-                                            if (value.unit) {
-                                                if (value.units) {
-                                                    return (
-                                                        <div className='template-certificate-field-settings' key={key}>
-                                                            <label>{value.label}</label>
-                                                            <div className='template-certificate-field-settings-input-with-unit template-certificate-field-settings-input-with-unit-selectable'>
-                                                                <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
-                                                                {value.units.map(currentUnit => {
-                                                                    return (
-                                                                        <div className={'template-certificate-field-settings-unit ' + (value.unit === currentUnit ? 'template-certificate-field-settings-unit-active' : '')} 
-                                                                            key={currentUnit} onClick={() => updateFieldUnit(fieldSettingsMenuValues.id, key, currentUnit)}>
-                                                                            {currentUnit}
-                                                                        </div>
-                                                                    );
-                                                                })}
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-
+                                    case 'text':
+                                        if (value.unit) {
+                                            if (value.units) {
                                                 return (
                                                     <div className='template-certificate-field-settings' key={key}>
                                                         <label>{value.label}</label>
-                                                        <div className='template-certificate-field-settings-input-with-unit'>
+                                                        <div className='template-certificate-field-settings-input-with-unit template-certificate-field-settings-input-with-unit-selectable'>
                                                             <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
-                                                            <div className='template-certificate-field-settings-unit'>{value.unit}</div>
+                                                            {value.units.map(currentUnit => {
+                                                                return (
+                                                                    <div className={'template-certificate-field-settings-unit ' + (value.unit === currentUnit ? 'template-certificate-field-settings-unit-active' : '')} 
+                                                                        key={currentUnit} onClick={() => updateFieldUnit(fieldSettingsMenuValues.id, key, currentUnit)}>
+                                                                        {currentUnit}
+                                                                    </div>
+                                                                );
+                                                            })}
                                                         </div>
                                                     </div>
                                                 );
@@ -603,62 +594,75 @@ function Template() {
                                             return (
                                                 <div className='template-certificate-field-settings' key={key}>
                                                     <label>{value.label}</label>
-                                                    <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
-                                                </div>
-                                            );
-
-                                        case 'select':
-                                            return (
-                                                <div className='template-certificate-field-settings' key={key}>
-                                                    <label>{value.label}</label>
-                                                    <select value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)}>
-                                                        {value.options.map(currentOption => {
-                                                            return (
-                                                                <option 
-                                                                    key={currentOption} 
-                                                                    value={currentOption} 
-                                                                >
-                                                                    {currentOption}
-                                                                </option>
-                                                            );
-                                                        })}
-                                                    </select>
-                                                </div>
-                                            );
-
-                                        case 'boolean':
-                                            return (
-                                                <div className='template-certificate-field-settings' key={key}>
-                                                    <label>{value.label}</label>
-                                                    <div className='template-certificate-field-settings-boolean-container'>
-                                                        <label htmlFor={'trueBooleanRadioFor' + key} className={value.value ? 'template-certificate-field-settings-boolean-active' : ''}>
-                                                            <input type='radio' name={'BooleanRadioFor' + key} id={'trueBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, true)} 
-                                                                checked={value.value ? true : false}
-                                                            />
-                                                            True
-                                                        </label>
-
-                                                        <label htmlFor={'falseBooleanRadioFor' + key} className={value.value ? '' : 'template-certificate-field-settings-boolean-active'}>
-                                                            <input type='radio' name={'BooleanRadioFor' + key} id={'falseBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, false)} 
-                                                                checked={value.value ? false : true}
-                                                            />
-                                                            False
-                                                        </label>
+                                                    <div className='template-certificate-field-settings-input-with-unit'>
+                                                        <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
+                                                        <div className='template-certificate-field-settings-unit'>{value.unit}</div>
                                                     </div>
                                                 </div>
                                             );
+                                        }
 
-                                        default:
-                                            return null;
+                                        return (
+                                            <div className='template-certificate-field-settings' key={key}>
+                                                <label>{value.label}</label>
+                                                <input type='text' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
+                                            </div>
+                                        );
+
+                                    case 'select':
+                                        return (
+                                            <div className='template-certificate-field-settings' key={key}>
+                                                <label>{value.label}</label>
+                                                <select value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)}>
+                                                    {value.options.map(currentOption => {
+                                                        return (
+                                                            <option 
+                                                                key={currentOption} 
+                                                                value={currentOption} 
+                                                            >
+                                                                {currentOption}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </select>
+                                            </div>
+                                        );
+
+                                    case 'boolean':
+                                        return (
+                                            <div className='template-certificate-field-settings' key={key}>
+                                                <label>{value.label}</label>
+                                                <div className='template-certificate-field-settings-boolean-container'>
+                                                    <label htmlFor={'trueBooleanRadioFor' + key} className={value.value ? 'template-certificate-field-settings-boolean-active' : ''}>
+                                                        <input type='radio' name={'BooleanRadioFor' + key} id={'trueBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, true)} 
+                                                            checked={value.value ? true : false}
+                                                        />
+                                                        True
+                                                    </label>
+
+                                                    <label htmlFor={'falseBooleanRadioFor' + key} className={value.value ? '' : 'template-certificate-field-settings-boolean-active'}>
+                                                        <input type='radio' name={'BooleanRadioFor' + key} id={'falseBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, false)} 
+                                                            checked={value.value ? false : true}
+                                                        />
+                                                        False
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        );
+
+                                    default:
+                                        return null;
                                 }
                             }) : <p className='template-certificate-field-text'>An error occured.</p>}
                         </div>
 
                         <div className='template-certificate-field-list-button'>
-                            <button id='save-field-button' type='button' className='button-primary' onClick={() => {
-                                setFieldSettingsMenuDisplay('hidden');
-                                setCurrentFieldListActive('');
-                            }}>Done</button>
+                            <Button buttonText='Done' buttonType='Primary' 
+                                clickFunction={() => {
+                                    setFieldSettingsMenuDisplay('hidden');
+                                    setCurrentFieldListActive('');
+                                }} 
+                            />
                         </div>
                     </div>
 
@@ -686,7 +690,7 @@ function Template() {
                         </div>
 
                         <div className='template-certificate-field-list-button'>
-                            <button id='add-field-button' type='button' className='button-primary' onClick={createField}>Add</button>
+                            <Button buttonText='Add' buttonType='Primary'  clickFunction={createField} />
                         </div>
                     </div>
                 </div>

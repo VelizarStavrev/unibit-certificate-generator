@@ -1,5 +1,6 @@
 import './Login.scss';
-import { Link } from 'react-router-dom';
+import Button from '../Shared/Button/Button';
+import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 
 function Login() {
     return (
@@ -14,10 +15,9 @@ function Login() {
                 <input type='password' name='password' />
                 <p className='login-error'>Invalid username or password!</p>
 
-                <button className='login-button' type='button'>Login</button>
-                <Link className='login-link' to='/password-reset'>Forgotten password?</Link>
-
-                <Link className='login-button-link' to='/register'>Register</Link>
+                <Button buttonText='Login' buttonType='Primary' buttonMarginTop='true' />
+                <ButtonLink buttonText='Forgotten password?' buttonLink='/password-reset' buttonType='Link' />
+                <ButtonLink buttonText='Register' buttonLink='/register' buttonType='Secondary' buttonMarginTop='true' />
             </form>
         </div>
     );

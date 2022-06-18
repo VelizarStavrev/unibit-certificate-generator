@@ -35,55 +35,5 @@
             text-align: center;
             margin-top: 5px;
         }
-        
-        .register-button {
-            border-radius: 10px;
-            border: none;
-            background-color: var(--secondary-color);
-            color: var(--main-color);
-            text-transform: uppercase;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.25s;
-            margin-top: 20px;
-            
-            &:hover {
-                background-color: var(--secondary-color-hover);
-            }
-        }
-        
-        .register-link {
-            color: var(--link-color);
-            font-size: 14px;
-            text-align: center;
-            margin-top: 5px;
-            transition: color 0.25s;
-            
-            &:hover {
-                color: var(--link-color-hover);
-            }
-        }
-        
-        .register-button-link {
-            border-radius: 10px;
-            background-color: var(--main-color);
-            box-shadow: var(--box-shadow-card);
-            text-transform: uppercase;
-            padding: 10px;
-            font-size: 16px;
-            text-decoration: none;
-            color: var(--secondary-color);
-            text-align: center;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.25s;
-            margin-top: 20px;
-            
-            &:hover {
-                background-color: var(--main-color-hover);
-            }
-        }
     }
 }

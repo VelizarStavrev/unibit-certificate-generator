@@ -10,7 +10,7 @@
         margin: 20px 0;
 
         .dashboard-search {
-            padding: 20px;
+            padding: 10px;
             padding-left: 40px;
             border-radius: 10px;
             border: none;
@@ -23,28 +23,6 @@
             
             &::placeholder {
                 color: var(--table-border-color);
-            }
-        }
-        
-        .dashboard-button-link {
-            border-radius: 10px;
-            background-color: var(--secondary-color);
-            box-shadow: var(--box-shadow-card);
-            text-transform: uppercase;
-            padding: 20px;
-            font-size: 16px;
-            text-decoration: none;
-            color: var(--main-color);
-            text-align: center;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.25s;
-            margin-left: 20px;
-            white-space: nowrap;
-            display: inline-block;
-            
-            &:hover {
-                background-color: var(--secondary-color-hover);
             }
         }
     }

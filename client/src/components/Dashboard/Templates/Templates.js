@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import viewIcon from '../../../assets/icons/view.svg';
 import editIcon from '../../../assets/icons/edit.svg';
 import deleteIcon from '../../../assets/icons/delete.svg';
+import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 
 function Templates() {
     return (
@@ -10,15 +11,14 @@ function Templates() {
             <div className='dashboard-search-and-nav'>
                 <input className='dashboard-search' placeholder='Search . . .' />
 
-                <Link className='dashboard-button-link' to='/dashboard/templates/new'>Add New</Link>
-
-                <Link className='dashboard-button-link' to='/dashboard/certificates'>Certificates</Link>
+                <ButtonLink buttonText='Add New' buttonLink='/dashboard/templates/new' buttonType='Primary' buttonMarginLeft='true' />
+                <ButtonLink buttonText='Certificates' buttonLink='/dashboard/certificates' buttonType='Primary' buttonMarginLeft='true' />
             </div>
 
             <table className='dashboard-table'>
                 <thead>
                     <tr>
-                        <th colspan='5' className='dashboard-table-header'>Your certificate templates</th>
+                        <th colSpan='5' className='dashboard-table-header'>Your certificate templates</th>
                     </tr>
                     
                     <tr>

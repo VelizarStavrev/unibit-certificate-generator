@@ -1,0 +1,60 @@
+.button-base {
+    border: none;
+    background-color: transparent;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
+    transition: var(--transition-background-color);
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.button-primary {
+    background-color: var(--secondary-color);
+    color: var(--main-color);
+
+    &:hover {
+        background-color: var(--secondary-color-hover);
+    }
+}
+
+.button-secondary {
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+    
+    &:hover {
+        background-color: var(--main-color-hover);
+    }
+}
+
+.button-secondary {
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+    
+    &:hover {
+        background-color: var(--main-color-hover);
+    }
+}
+
+.button-error {
+    background-color: var(--error-color);
+    color: var(--main-color);
+    
+    &:hover {
+        background-color: var(--error-color-hover);
+    }
+}
+
+.button-margin-top {
+    margin-top: 20px;
+}
+
+.button-margin-left {
+    margin-left: 20px;
+}
+
+.button-margin-right {
+    margin-right: 20px;
+}

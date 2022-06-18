@@ -1,4 +1,5 @@
 import './Contacts.scss';
+import Button from '../Shared/Button/Button';
 
 function Contacts() {
     return (
@@ -18,7 +19,7 @@ function Contacts() {
                 <textarea name='message' />
                 <p className='contacts-error'>Invalid message!</p>
 
-                <button className='contacts-button' type='button'>Send</button>
+                <Button buttonText='Send' buttonType='Primary' buttonMarginTop='true' />
             </form>
 
             <div className='contacts-text'>
