@@ -8,7 +8,7 @@ import isLogged from '../../contexts/isLoggedContext';
 
 function Login() {
     const { setLogged } = useContext(isLogged);
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     function userLogin() {
         const isFormValid = checkFormValidity();

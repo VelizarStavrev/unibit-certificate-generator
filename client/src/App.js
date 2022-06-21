@@ -1,11 +1,16 @@
+// Styles
 import './App.scss';
 
+// Libraries and hooks
 import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Contexts
 import mainClass from './contexts/mainClassContext';
 import isLogged from './contexts/isLoggedContext';
+
+// Route guards
+import RequireAuth from './guards/RequireAuth';
 
 // Components
 // Shared
@@ -28,7 +33,6 @@ import Reset from './components/Reset/Reset';
 // Pages - Logged in
 import Certificates from './components/Dashboard/Certificates/Certificates';
 import Templates from './components/Dashboard/Templates/Templates';
-
 import Template from './components/Template/Template';
 
 function App() {
@@ -63,13 +67,14 @@ function App() {
                 <Route path='/dashboard' element={<Navigate to='/dashboard/certificates' />} />
                 <Route path='/certificates' element={<Navigate to='/dashboard/certificates' />} />
                 <Route path='/templates' element={<Navigate to='/dashboard/templates' />} />
-                <Route path='/dashboard/certificates' element={<Certificates />} />
-                <Route path='/dashboard/templates' element={<Templates />} />
-                <Route path='/profile' element={<Profile />} />
-
-                <Route path='/dashboard/template' element={<Template />} />
                 <Route path='/template' element={<Navigate to='/dashboard/template' />} />
-                
+                <Route element={<RequireAuth />}>
+                  <Route path='/dashboard/certificates' element={<Certificates />} />
+                  <Route path='/dashboard/templates' element={<Templates />} />
+                  <Route path='/dashboard/template' element={<Template />} />
+                  <Route path='/profile' element={<Profile />} />
+                </Route>
+
                 {/* <Route path='*' element={<404 />} /> */}
               </Routes>
           </main>
