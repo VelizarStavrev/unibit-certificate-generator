@@ -5,24 +5,42 @@
     align-self: flex-start;
 
     // The text and fields above the certificate
-    h1 {
-        text-align: left;
-        margin-bottom: 20px;
+    .template-container-text-container {
+        h1 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        
+        .template-text-pair-one-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .template-text-pair-two-rows {
+            margin-bottom: 20px;
+
+            p:first-child {
+                margin-bottom: 5px;
+            }
+        }
+        
+        .template-text-pair-header {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input, textarea {
+            resize: none;
+            width: 100%;
+            border: none;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgb(8 14 20 / 15%);
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
     }
-    
-    .template-text-pair-one-row {
-        display: flex;
-        margin-bottom: 10px;
-    }
-    
-    .template-text-pair-two-rows {
-        margin-bottom: 20px;
-    }
-    
-    .template-text-pair-header {
-        font-weight: bold;
-        margin-right: 10px;
-    }
+
     
     // Certificate display styling
     .template-certificate-and-fields-container {
@@ -70,6 +88,10 @@
                     align-items: center;
                     justify-content: center;
                     height: 100%;
+                }
+
+                &.template-certificate-container-FE-view {
+                    max-width: unset;
                 }
             }
             

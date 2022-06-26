@@ -34,6 +34,7 @@ import Reset from './components/Reset/Reset';
 import Certificates from './components/Dashboard/Certificates/Certificates';
 import Templates from './components/Dashboard/Templates/Templates';
 import Template from './components/Template/Template';
+import TemplateView from './components/Template/TemplateView/TemplateView';
 
 function App() {
   const checkIfLogged = localStorage.getItem('token') ? true : false;
@@ -67,11 +68,17 @@ function App() {
                 <Route path='/dashboard' element={<Navigate to='/dashboard/certificates' />} />
                 <Route path='/certificates' element={<Navigate to='/dashboard/certificates' />} />
                 <Route path='/templates' element={<Navigate to='/dashboard/templates' />} />
-                <Route path='/template' element={<Navigate to='/dashboard/template' />} />
+                <Route path='/dashboard/template/' element={<Navigate to='/dashboard/template/new' />} />
+                <Route path='/template/' element={<Navigate to='/dashboard/template/new' />} />
+                <Route path='/template/new' element={<Navigate to='/dashboard/template/new' />} />
+                <Route path='/template/:id' element={<Navigate to='/dashboard/template/:id' />} />
+                <Route path='/template/edit/:id' element={<Navigate to='/dashboard/template/edit/:id' />} />
                 <Route element={<RequireAuth />}>
                   <Route path='/dashboard/certificates' element={<Certificates />} />
                   <Route path='/dashboard/templates' element={<Templates />} />
-                  <Route path='/dashboard/template' element={<Template />} />
+                  <Route path='/dashboard/template/new' element={<Template templateType='new' />} />
+                  <Route path='/dashboard/template/:templateId' element={<TemplateView />} />
+                  <Route path='/dashboard/template/edit/:templateId' element={<Template templateType='edit' />} />
                   <Route path='/profile' element={<Profile />} />
                 </Route>
 
