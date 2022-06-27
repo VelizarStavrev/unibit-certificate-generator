@@ -8,6 +8,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 // Contexts
 import mainClass from './contexts/mainClassContext';
 import isLogged from './contexts/isLoggedContext';
+import messageContext from './contexts/messageContext';
 
 // Route guards
 import RequireAuth from './guards/RequireAuth';
@@ -16,6 +17,7 @@ import RequireAuth from './guards/RequireAuth';
 // Shared
 import Header from './components/Shared/Header/Header';
 import Footer from './components/Shared/Footer/Footer';
+import Message from './components/Shared/Message/Message';
 
 // Pages
 // Pages - Anonymous and logged in
@@ -41,54 +43,61 @@ function App() {
   const [logged, setLogged] = useState(checkIfLogged);
   const loggedValue = { logged, setLogged };
   
-  const [currentClass, setClass] = useState(mainClass);
+  const [currentClass, setClass] = useState('');
   const classValue = { currentClass, setClass };
+  
+  const [currentMessages, setCurrentMessages] = useState([]);
+  const currentMessagesValue = { currentMessages, setCurrentMessages };
 
   return (
     <div className='App'>
-      <isLogged.Provider value={loggedValue}>
-        <Header />
+      <messageContext.Provider value={currentMessagesValue}>
+        <isLogged.Provider value={loggedValue}>
+          <Header />
 
-        <mainClass.Provider value={classValue}>
-          <main className={currentClass}>
-              <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/verify' element={<Verify />} />
-                <Route path='/documentation' element={<Documentation />}>
-                  <Route path=':section' element={<Documentation />}>
-                    <Route path=':topic' element={<Documentation />} />
+          <mainClass.Provider value={classValue}>
+            <main className={currentClass}>
+                <Message />
+
+                <Routes>
+                  <Route path='/' element={<Home />} />
+                  <Route path='/verify' element={<Verify />} />
+                  <Route path='/documentation' element={<Documentation />}>
+                    <Route path=':section' element={<Documentation />}>
+                      <Route path=':topic' element={<Documentation />} />
+                    </Route>
                   </Route>
-                </Route>
-                <Route path='/contacts' element={<Contacts />} />
+                  <Route path='/contacts' element={<Contacts />} />
 
-                <Route path='/register' element={<Register />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/password-reset' element={<Reset />} />
+                  <Route path='/register' element={<Register />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/password-reset' element={<Reset />} />
 
-                <Route path='/dashboard' element={<Navigate to='/dashboard/certificates' />} />
-                <Route path='/certificates' element={<Navigate to='/dashboard/certificates' />} />
-                <Route path='/templates' element={<Navigate to='/dashboard/templates' />} />
-                <Route path='/dashboard/template/' element={<Navigate to='/dashboard/template/new' />} />
-                <Route path='/template/' element={<Navigate to='/dashboard/template/new' />} />
-                <Route path='/template/new' element={<Navigate to='/dashboard/template/new' />} />
-                <Route path='/template/:id' element={<Navigate to='/dashboard/template/:id' />} />
-                <Route path='/template/edit/:id' element={<Navigate to='/dashboard/template/edit/:id' />} />
-                <Route element={<RequireAuth />}>
-                  <Route path='/dashboard/certificates' element={<Certificates />} />
-                  <Route path='/dashboard/templates' element={<Templates />} />
-                  <Route path='/dashboard/template/new' element={<Template templateType='new' />} />
-                  <Route path='/dashboard/template/:templateId' element={<TemplateView />} />
-                  <Route path='/dashboard/template/edit/:templateId' element={<Template templateType='edit' />} />
-                  <Route path='/profile' element={<Profile />} />
-                </Route>
+                  <Route path='/dashboard' element={<Navigate to='/dashboard/certificates' />} />
+                  <Route path='/certificates' element={<Navigate to='/dashboard/certificates' />} />
+                  <Route path='/templates' element={<Navigate to='/dashboard/templates' />} />
+                  <Route path='/dashboard/template/' element={<Navigate to='/dashboard/template/new' />} />
+                  <Route path='/template/' element={<Navigate to='/dashboard/template/new' />} />
+                  <Route path='/template/new' element={<Navigate to='/dashboard/template/new' />} />
+                  <Route path='/template/:id' element={<Navigate to='/dashboard/template/:id' />} />
+                  <Route path='/template/edit/:id' element={<Navigate to='/dashboard/template/edit/:id' />} />
+                  <Route element={<RequireAuth />}>
+                    <Route path='/dashboard/certificates' element={<Certificates />} />
+                    <Route path='/dashboard/templates' element={<Templates />} />
+                    <Route path='/dashboard/template/new' element={<Template templateType='new' />} />
+                    <Route path='/dashboard/template/:templateId' element={<TemplateView />} />
+                    <Route path='/dashboard/template/edit/:templateId' element={<Template templateType='edit' />} />
+                    <Route path='/profile' element={<Profile />} />
+                  </Route>
 
-                {/* <Route path='*' element={<404 />} /> */}
-              </Routes>
-          </main>
-        </mainClass.Provider>
-      
-        <Footer />
-      </isLogged.Provider>
+                  {/* <Route path='*' element={<404 />} /> */}
+                </Routes>
+            </main>
+          </mainClass.Provider>
+        
+          <Footer />
+        </isLogged.Provider>
+      </messageContext.Provider>
     </div>
   );
 }

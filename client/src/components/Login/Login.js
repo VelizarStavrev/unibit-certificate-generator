@@ -5,9 +5,11 @@ import Button from '../Shared/Button/Button';
 import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 import UserService from '../../services/UserService';
 import isLogged from '../../contexts/isLoggedContext';
+import messageContext from '../../contexts/messageContext';
 
 function Login() {
     const { setLogged } = useContext(isLogged);
+    const { currentMessages, setCurrentMessages } = useContext(messageContext);
     const navigate = useNavigate();
 
     function userLogin() {
@@ -25,6 +27,10 @@ function Login() {
                     // Log the user in - update the app state to logged in
                     localStorage.setItem('token', res.token);
                     setLogged(true);
+
+                    let newCurrentMessages = [...currentMessages];
+                    newCurrentMessages.push({messageType: 'success', messageText: 'Log in successful!'});
+                    setCurrentMessages(newCurrentMessages);
 
                     // Redirect the user
                     navigate('/dashboard/certificates');
