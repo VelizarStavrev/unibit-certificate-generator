@@ -35,8 +35,8 @@ import Reset from './components/Reset/Reset';
 // Pages - Logged in
 import Certificates from './components/Dashboard/Certificates/Certificates';
 import Templates from './components/Dashboard/Templates/Templates';
-import Template from './components/Template/Template';
-import TemplateView from './components/Template/TemplateView/TemplateView';
+import Template from './components/Dashboard/Template/Template';
+import TemplateView from './components/Dashboard/Template/TemplateView/TemplateView';
 
 function App() {
   const checkIfLogged = localStorage.getItem('token') ? true : false;

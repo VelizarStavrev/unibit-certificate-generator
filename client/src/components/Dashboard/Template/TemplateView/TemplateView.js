@@ -1,7 +1,7 @@
 import '../Template.scss';
 import { useState, useEffect, useContext } from 'react';
-import mainClass from '../../../contexts/mainClassContext';
-import DataService from '../../../services/DataService';
+import mainClass from '../../../../contexts/mainClassContext';
+import DataService from '../../../../services/DataService';
 import { useParams } from 'react-router-dom';
 
 function Template() {
