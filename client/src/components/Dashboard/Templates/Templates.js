@@ -70,7 +70,7 @@ function Templates() {
                         function addZeroForTwoDigits(dateData) {
                             return dateData < 10 ? '0' + dateData : dateData;
                         }
-                        console.log(key);
+                        
                         const dateInitial = new Date(value.created * 1000);
                         const date = addZeroForTwoDigits(dateInitial.getDate()) + '/' + addZeroForTwoDigits(dateInitial.getMonth() + 1) + '/' + addZeroForTwoDigits(dateInitial.getFullYear());
 
