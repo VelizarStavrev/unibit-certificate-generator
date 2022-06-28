@@ -70,13 +70,13 @@ function Templates() {
                         function addZeroForTwoDigits(dateData) {
                             return dateData < 10 ? '0' + dateData : dateData;
                         }
-
+                        console.log(key);
                         const dateInitial = new Date(value.created * 1000);
                         const date = addZeroForTwoDigits(dateInitial.getDate()) + '/' + addZeroForTwoDigits(dateInitial.getMonth() + 1) + '/' + addZeroForTwoDigits(dateInitial.getFullYear());
 
                         return (
                             <tr key={key}>
-                                <td className='dashboard-table-number'>1</td>
+                                <td className='dashboard-table-number'>{Number(key) + 1}</td>
                                 <td className='dashboard-table-name'>{value.name}</td>
                                 <td className='dashboard-table-created'>{date}</td>
                                 <td className='dashboard-table-actions'>

@@ -4,6 +4,7 @@ import mainClass from '../../contexts/mainClassContext';
 import editIcon from '../../assets/icons/edit.svg';
 import deleteIcon from '../../assets/icons/delete.svg';
 import Button from '../Shared/Button/Button';
+import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 import DataService from '../../services/DataService';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -666,7 +667,12 @@ function Template(props) {
                         <div className='template-certificate-button-container-button'>
                             <Button buttonText='Save template' buttonType='Primary' buttonMarginRight='true' clickFunction={saveTemplate} />
                             <Button buttonText='Reset' buttonType='Secondary' buttonMarginRight='true' clickFunction={resetTemplate} />
-                            <Button buttonText='Delete' buttonType='Error' clickFunction={deleteTemplate} />
+
+                            {props.templateType === 'new' ? (
+                                <ButtonLink buttonText='Cancel' buttonLink='/dashboard/templates' buttonType='Secondary' />
+                            ) : (
+                                <Button buttonText='Delete' buttonType='Error' clickFunction={deleteTemplate} />
+                            )}
                         </div>
                     </div>
                 </div>
