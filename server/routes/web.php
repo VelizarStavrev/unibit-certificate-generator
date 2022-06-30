@@ -248,7 +248,7 @@ $router->post('/template/new', function (Request $request) {
             $field_properties = $current_field['properties'];
     
             $field_values = '"' . $field_id . '", "' . $template_id . '", "' . $field_type . '"';
-            $field_query = 'INSERT INTO fields (id, template_id, type) VALUES (' . $field_values . ')';
+            $field_query = 'INSERT INTO template_fields (id, template_id, type) VALUES (' . $field_values . ')';
             $field_results = app('db')->insert($field_query);
     
             if ($field_results == 1) {
@@ -271,7 +271,7 @@ $router->post('/template/new', function (Request $request) {
                 }
                 
                 $property_values_final_string = implode(', ', $property_values_final);
-                $property_query = 'INSERT INTO field_attributes (field_id, name, label, value, type, unit, units, options) VALUES ' . $property_values_final_string;
+                $property_query = 'INSERT INTO template_field_attributes (field_id, name, label, value, type, unit, units, options) VALUES ' . $property_values_final_string;
                 $property_results = app('db')->insert($property_query);
 
                 if ($property_results != 1) {
@@ -342,7 +342,7 @@ $router->post('/template/edit/{templateId}', function (Request $request, $templa
     
     if ($template_results == 1) {
         // Delete all previous fields and create new ones
-        $field_query_delete = 'DELETE FROM fields WHERE template_id = "' . $template_id . '"';
+        $field_query_delete = 'DELETE FROM template_fields WHERE template_id = "' . $template_id . '"';
         $field_results_delete = app('db')->delete($field_query_delete);
 
         foreach ($template_fields as $current_field) {
@@ -351,12 +351,12 @@ $router->post('/template/edit/{templateId}', function (Request $request, $templa
             $field_properties = $current_field['properties'];
     
             $field_values = '"' . $field_id . '", "' . $template_id . '", "' . $field_type . '"';
-            $field_query = 'INSERT INTO fields (id, template_id, type) VALUES (' . $field_values . ')';
+            $field_query = 'INSERT INTO template_fields (id, template_id, type) VALUES (' . $field_values . ')';
             $field_results = app('db')->insert($field_query);
     
             if ($field_results > 0) {
                 $property_values_final = [];
-                
+
                 foreach ($field_properties as $current_property_name => $current_property) {
                     $property_name = $current_property_name;
                     $property_label = $current_property['label'];
@@ -366,16 +366,12 @@ $router->post('/template/edit/{templateId}', function (Request $request, $templa
                     $property_units = isset($current_property['units']) ? implode(', ', $current_property['units']) : 'NULL';
                     $property_options = isset($current_property['options']) ? implode(', ', $current_property['options']) : 'NULL';
                     
-                    if ($property_type === 'boolean') {
-                        $property_value = $property_value ? '1' : '0';
-                    }
-                    
                     $property_values = '("' . $field_id . '", "' . $property_name . '", "' . $property_label . '", "' . $property_value . '", "' . $property_type . '", "' . $property_unit . '", "' . $property_units . '", "' . $property_options . '")';
                     array_push($property_values_final, $property_values);
                 }
                 
                 $property_values_final_string = implode(', ', $property_values_final);
-                $property_query = 'INSERT INTO field_attributes (field_id, name, label, value, type, unit, units, options) VALUES ' . $property_values_final_string;
+                $property_query = 'INSERT INTO template_field_attributes (field_id, name, label, value, type, unit, units, options) VALUES ' . $property_values_final_string;
                 $property_results = app('db')->insert($property_query);
 
                 if ($property_results != 1) {
@@ -468,7 +464,7 @@ $router->get('/template/{templateId}', function (Request $request, $templateId) 
 
     if (count($template_results)) {
         // Get the field ids
-        $template_fields_query = 'SELECT * FROM fields WHERE template_id = "' . $template_id . '"';
+        $template_fields_query = 'SELECT * FROM template_fields WHERE template_id = "' . $template_id . '"';
         $template_fields_results = app('db')->select($template_fields_query);
         
         if (count($template_fields_results)) {
@@ -477,7 +473,7 @@ $router->get('/template/{templateId}', function (Request $request, $templateId) 
                 $current_field_id = $current_field->id;
     
                  // Get the field attributes
-                $template_field_attributes_query = 'SELECT * FROM field_attributes WHERE field_id = "' . $current_field_id . '"';
+                $template_field_attributes_query = 'SELECT * FROM template_field_attributes WHERE field_id = "' . $current_field_id . '"';
                 $template_field_attributes_results = app('db')->select($template_field_attributes_query);
                 $template_field_results_final = [];
     
