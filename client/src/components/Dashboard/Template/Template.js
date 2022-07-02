@@ -7,6 +7,7 @@ import Button from '../../Shared/Button/Button';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import DataService from '../../../services/DataService';
 import { useParams, useNavigate } from 'react-router-dom';
+import messageContext from '../../../contexts/messageContext';
 
 function Template(props) {
     // Set the class of the main containter to be for this specific page
@@ -21,6 +22,7 @@ function Template(props) {
 
     // Template related functionality
     const navigate = useNavigate();
+    const { currentMessages, setCurrentMessages } = useContext(messageContext);
 
     function saveTemplate() {
         let fieldList = structuredClone(currentFieldList);
@@ -37,8 +39,19 @@ function Template(props) {
                 const templateNewResult = DataService.createTemplate(data);
         
                 templateNewResult.then(res => {
-                    // Redirect the user
-                    navigate('/dashboard/templates/');
+                    if (res.status) {
+                        let newCurrentMessages = [...currentMessages];
+                        newCurrentMessages.push({messageType: 'success', messageText: 'Template creation successful!'});
+                        setCurrentMessages(newCurrentMessages);
+
+                        // Redirect the user
+                        navigate('/dashboard/templates/');
+                        return;
+                    }
+
+                    let newCurrentMessages = [...currentMessages];
+                    newCurrentMessages.push({messageType: 'error', messageText: 'An error occured when creating the template!'});
+                    setCurrentMessages(newCurrentMessages);
                 });
                 break;
 
@@ -46,8 +59,19 @@ function Template(props) {
                 const templateEditResult = DataService.editTemplate(templateId, data);
         
                 templateEditResult.then(res => {
-                    // TO DO - give an output to the user
-                    console.log(res);
+                    if (res.status) {
+                        let newCurrentMessages = [...currentMessages];
+                        newCurrentMessages.push({messageType: 'success', messageText: 'Template edit successful!'});
+                        setCurrentMessages(newCurrentMessages);
+
+                        // Redirect the user
+                        navigate('/dashboard/templates/');
+                        return;
+                    } 
+
+                    let newCurrentMessages = [...currentMessages];
+                    newCurrentMessages.push({messageType: 'error', messageText: 'An error occured when saving the template edit data!'});
+                    setCurrentMessages(newCurrentMessages);
                 });
                 break;
 
@@ -82,19 +106,24 @@ function Template(props) {
         
         templateDeleteResult.then(res => {
             if (res.status) {
-                navigate('/dashboard/templates/');
-            }
-        });
+                let newCurrentMessages = [...currentMessages];
+                newCurrentMessages.push({messageType: 'success', messageText: res.message});
+                setCurrentMessages(newCurrentMessages);
 
-        // TO DO - error handling
+                // Redirect the user
+                navigate('/dashboard/templates/');
+                return;
+            }
+
+            let newCurrentMessages = [...currentMessages];
+            newCurrentMessages.push({messageType: 'error', messageText: res.message});
+            setCurrentMessages(newCurrentMessages);
+        });
     }
 
     function getTemplateById(templateIdReceived) {
         const templateResult = DataService.getTemplate(templateIdReceived);
-
         templateResult.then(res => {
-            // TO DO - give an output to the user
-
             if (res.status) {
                 let data = res.data;
 
@@ -151,7 +180,16 @@ function Template(props) {
                 setCertificateContainerHeightOffset(certificateContainerRef.current.offsetTop);
                 setCertificateContainerWidthOffset(certificateContainerRef.current.offsetLeft);
                 setCurrentFieldList(data.fields);
+
+                let newCurrentMessages = [...currentMessages];
+                newCurrentMessages.push({messageType: 'success', messageText: res.message});
+                setCurrentMessages(newCurrentMessages);
+                return;
             }
+
+            let newCurrentMessages = [...currentMessages];
+            newCurrentMessages.push({messageType: 'error', messageText: res.message});
+            setCurrentMessages(newCurrentMessages);
         });
     }
 
@@ -281,7 +319,7 @@ function Template(props) {
                     },
                     'editable': {
                         label: 'Editable',
-                        value: false,
+                        value: '0',
                         type: 'boolean'
                     }
                 }
@@ -333,7 +371,7 @@ function Template(props) {
                     },
                     'editable': {
                         label: 'Editable',
-                        value: false,
+                        value: '0',
                         type: 'boolean'
                     }
                 };
@@ -411,7 +449,7 @@ function Template(props) {
                     },
                     'editable': {
                         label: 'Editable',
-                        value: false,
+                        value: '0',
                         type: 'boolean'
                     }
                 };
@@ -783,16 +821,16 @@ function Template(props) {
                                             <div className='template-certificate-field-settings' key={key}>
                                                 <label>{value.label}</label>
                                                 <div className='template-certificate-field-settings-boolean-container'>
-                                                    <label htmlFor={'trueBooleanRadioFor' + key} className={value.value ? 'template-certificate-field-settings-boolean-active' : ''}>
-                                                        <input type='radio' name={'BooleanRadioFor' + key} id={'trueBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, true)}
-                                                            checked={value.value ? true : false}
+                                                    <label htmlFor={'trueBooleanRadioFor' + key} className={value.value === '1' ? 'template-certificate-field-settings-boolean-active' : ''}>
+                                                        <input type='radio' name={'BooleanRadioFor' + key} id={'trueBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, '1')}
+                                                            checked={value.value === '1' ? true : false}
                                                         />
                                                         True
                                                     </label>
 
-                                                    <label htmlFor={'falseBooleanRadioFor' + key} className={value.value ? '' : 'template-certificate-field-settings-boolean-active'}>
-                                                        <input type='radio' name={'BooleanRadioFor' + key} id={'falseBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, false)}
-                                                            checked={value.value ? false : true}
+                                                    <label htmlFor={'falseBooleanRadioFor' + key} className={value.value === '1' ? '' : 'template-certificate-field-settings-boolean-active'}>
+                                                        <input type='radio' name={'BooleanRadioFor' + key} id={'falseBooleanRadioFor' + key} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, '0')}
+                                                            checked={value.value === '1' ? false : true}
                                                         />
                                                         False
                                                     </label>
