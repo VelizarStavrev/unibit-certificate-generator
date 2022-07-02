@@ -16,7 +16,7 @@ function Message() {
                         break;
 
                     case 'error':
-                        component = <p className='message-success' key={key} onClick={(e) => e.target.remove()}>{value.messageText}</p>
+                        component = <p className='message-error' key={key} onClick={(e) => e.target.remove()}>{value.messageText}</p>
                         break;
 
                     default:
