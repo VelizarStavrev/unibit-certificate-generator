@@ -1,6 +1,7 @@
 const token = localStorage.getItem('token');
 
 const DataService = {
+    // Templates
     createTemplate: function (fieldData) {
         // Send to the BE
         return fetch(`http://localhost:8000/template/new`, {
@@ -103,19 +104,110 @@ const DataService = {
             }
         });
     },
-
+    
+    // Certificates
     createCertificate: function (fieldData) {
-        // TO DO
+        // Send to the BE
+        return fetch(`http://localhost:8000/certificate/new`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(fieldData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch((error) => {
+            return {
+                status: false,
+                message: 'An error occured!'
+            }
+        });
     },
-    getCertificate: function (templateId) {
-        // TO DO
+    editCertificate: function (certificateId, fieldData) {
+        // Send to the BE
+        return fetch(`http://localhost:8000/certificate/edit/${certificateId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(fieldData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch((error) => {
+            return {
+                status: false,
+                message: 'An error occured!'
+            }
+        });
+    },
+    deleteCertificate: function (certificateId) {
+        // Send to the BE
+        return fetch(`http://localhost:8000/certificate/delete/${certificateId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch((error) => {
+            return {
+                status: false,
+                message: 'An error occured!'
+            }
+        });
+    },
+    getCertificate: function (certificateId) {
+        // Send to the BE
+        return fetch(`http://localhost:8000/certificate/${certificateId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch((error) => {
+            return {
+                status: false,
+                message: 'An error occured!'
+            }
+        });
     },
     getCertificates: function () {
-        // TO DO
-    },
-    
-
-
+        // Send to the BE
+        return fetch(`http://localhost:8000/certificates`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch((error) => {
+            return {
+                status: false,
+                message: 'An error occured!'
+            }
+        });
+    }
 };
 
 export default DataService;

@@ -33,10 +33,11 @@ import Login from './components/Login/Login';
 import Reset from './components/Reset/Reset';
 
 // Pages - Logged in
-import Certificates from './components/Dashboard/Certificates/Certificates';
 import Templates from './components/Dashboard/Templates/Templates';
 import Template from './components/Dashboard/Template/Template';
 import TemplateView from './components/Dashboard/Template/TemplateView/TemplateView';
+import Certificates from './components/Dashboard/Certificates/Certificates';
+import Certificate from './components/Dashboard/Certificate/Certificate';
 
 function App() {
   const checkIfLogged = localStorage.getItem('token') ? true : false;
@@ -83,6 +84,9 @@ function App() {
                   <Route path='/template/edit/:id' element={<Navigate to='/dashboard/template/edit/:id' />} />
                   <Route element={<RequireAuth />}>
                     <Route path='/dashboard/certificates' element={<Certificates />} />
+                    <Route path='/dashboard/certificate/new' element={<Certificate certificateType='new' />} />
+                    {/* <Route path='/dashboard/certificate/:certificateId' element={<CertificateView />} /> */}
+                    <Route path='/dashboard/certificate/edit/:certificateId' element={<Certificate certificateType='edit' />} />
                     <Route path='/dashboard/templates' element={<Templates />} />
                     <Route path='/dashboard/template/new' element={<Template templateType='new' />} />
                     <Route path='/dashboard/template/:templateId' element={<TemplateView />} />

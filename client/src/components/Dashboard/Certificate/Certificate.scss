@@ -1,0 +1,377 @@
+.certificate-container {
+    max-width: 1040px;
+    margin: 20px auto;
+    width: 100%;
+    align-self: flex-start;
+
+    // The text and fields above the certificate
+    .certificate-container-text-container {
+        h1 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        
+        .certificate-text-pair-one-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .certificate-text-pair-two-rows {
+            margin-bottom: 20px;
+
+            p:first-child {
+                margin-bottom: 5px;
+            }
+        }
+        
+        .certificate-text-pair-header {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input, textarea, select {
+            resize: none;
+            width: 100%;
+            border: none;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgb(8 14 20 / 15%);
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+    }
+    
+    // Certificate display styling
+    .certificate-certificate-and-fields-container {
+        display: flex;
+
+        .certificate-certificate-main-container {
+            // All certificate display related styles
+            .certificate-certificate-container-FE {
+                margin-bottom: 10px;
+                border: 2px solid lightgray;
+                box-sizing: content-box;
+                max-width: 845px;
+                overflow: auto;
+                
+                .certificate-certificate-container-horizontal {
+                    height: 210mm;
+                    width: 297mm;
+                }
+                
+                .certificate-certificate-container-vertical {
+                    height: 297mm;
+                    width: 210mm;
+                }
+                
+                div[draggable="true"] {
+                    cursor: move;
+                }
+                
+                div[draggable="true"] a, 
+                div[draggable="true"] img {
+                    cursor: move;
+                    pointer-events: none;
+                }
+                
+                div[draggable="true"]:hover {
+                    outline: 2px solid black;
+                }
+                
+                .active {
+                    outline: 2px solid black;
+                }
+                
+                .certificate-certificate-field-text {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                }
+
+                &.certificate-certificate-container-FE-view {
+                    max-width: unset;
+                }
+            }
+            
+            // Certificate radio buttons and buttons
+            // Custom radio buttons
+            .certificate-certificate-button-container-radio .certificate-radio-button-container {
+                display: inline-flex;
+                align-items: center;
+                position: relative;
+                padding-left: 30px;
+                cursor: pointer;
+                font-size: 16px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                margin-right: 20px;
+                height: 24px;
+
+                // Hide the browser's default radio button
+                input {
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+    
+                // Create a custom radio button
+                .checkmark {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 24px;
+                    width: 24px;
+                    background-color: var(--main-color);
+                    border: 2px solid var(--secondary-color);
+                    border-radius: 50%;
+                }
+    
+                // On mouse-over, add a grey background color
+                .certificate-radio-button-container:hover input ~ .checkmark:after {
+                    display: block;
+                    top: 2px;
+                    left: 2px;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background-color: var(--secondary-color);
+                }
+    
+                // When the radio button is checked, add a blue background
+                input:checked ~ .checkmark {
+                    background-color: var(--main-color);
+                    border: 2px solid var(--secondary-color);
+                }
+    
+                // Create the indicator (the dot/circle - hidden when not checked)
+                .checkmark:after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                }
+    
+                // Show the indicator (dot/circle) when checked
+                input:checked ~ .checkmark:after {
+                    display: block;
+                }
+    
+                // Style the indicator (dot/circle)
+                .checkmark:after {
+                    top: 2px;
+                    left: 2px;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background-color: var(--secondary-color);
+                }
+            }
+
+            // Certificate buttons
+            .certificate-certificate-button-container {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+
+        // Fields
+        .certificate-certificate-field-management {
+            display: flex;
+            margin-left: 20px;
+            max-height: 862px;
+        
+            .certificate-certificate-field-list {
+                width: 165px;
+                box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+            
+                &.certificate-certificate-field-menu {
+                    align-self: flex-end;
+                }
+                
+                &.hidden {
+                    display: none;
+                }
+        
+                .certificate-certificate-field-list-header {
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid lightgray;
+                }
+                
+                .certificate-certificate-field-list-content {
+                    height: 100%;
+                    overflow: auto;
+                    
+                    .certificate-certificate-field {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 10px;
+                        border-bottom: 1px solid lightgray;
+                
+                        &:last-child {
+                            border-bottom: none;
+                        }
+                
+                        button {
+                            height: 16px;
+                            width: 16px;
+                            background-color: transparent;
+                            border: none;
+                            cursor: pointer;
+                        
+                            &:last-child {
+                                margin-left: 5px;
+                            }
+                            
+                            img {
+                                height: 16px;
+                                width: 16px;
+                                pointer-events: none;
+                            }
+                        }
+                    }
+                    
+                    .certificate-certificate-field-text {
+                        padding: 10px;
+                        text-align: center;
+                    }
+                    
+                    .certificate-certificate-field-active {
+                        background-color: #000000;
+                        color: #FFFFFF;
+                    
+                        button {
+                            pointer-events: none;
+                        }
+                    }
+                    
+                    .certificate-certificate-field-clickable:hover {
+                        background-color: #000000;
+                        color: #FFFFFF;
+                        cursor: pointer;
+                    }
+                    
+                    .certificate-certificate-field-settings {
+                        padding: 10px;
+                        border-bottom: 1px solid lightgray;
+                        
+                        &:last-child {
+                            border-bottom: none;
+                        }
+                        
+                        label {
+                            font-weight: bold;
+                            margin-left: 5px;
+                        }
+                        
+                        input {
+                            width: 100%;
+                            margin-top: 5px;
+                            border: none;
+                            padding: 10px;
+                            box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
+                            border-radius: 10px;
+                            font-size: 16px;
+                            outline: none;
+                        }
+
+                        select {
+                            width: 100%;
+                            margin-top: 5px;
+                            border: none;
+                            padding: 10px;
+                            box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
+                            border-radius: 10px;
+                            font-size: 16px;
+                        }
+
+                        .certificate-certificate-field-settings-boolean-container {
+                            width: 100%;
+                            margin-top: 5px;
+                            border: none;
+                            box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
+                            border-radius: 10px;
+                            font-size: 16px;
+                            display: flex;
+                            justify-content: space-between;
+
+                            label {
+                                cursor: pointer;
+                                padding: 10px;
+                                display: inline-block;
+                                width: 50%;
+                                
+                                &:first-child {
+                                    border-top-left-radius: 10px;
+                                    border-bottom-left-radius: 10px;
+                                }
+
+                                &:last-child {
+                                    border-top-right-radius: 10px;
+                                    border-bottom-right-radius: 10px;
+                                }
+                            }
+
+                            input {
+                                display: none;
+                            }
+
+                            .certificate-certificate-field-settings-boolean-active {
+                                background-color: var(--secondary-color);
+                                color: var(--main-color);
+                            }
+                        }
+
+                        .certificate-certificate-field-settings-input-with-unit {
+                            display: flex;
+                            width: 100%;
+                            margin-top: 5px;
+                            border: none;
+                            box-shadow: 2px 2px 5px rgba(8,14,20,0.15);
+                            border-radius: 10px;
+                            font-size: 16px;
+
+                            input {
+                                margin: 0;
+                                box-shadow: none;
+                            }
+
+                            .certificate-certificate-field-settings-unit {
+                                margin: 10px 0;
+                                padding: 0 10px;
+                                border-left: 1px solid var(--table-border-color);
+                                color: var(--table-border-color);
+                            }
+
+                            &.certificate-certificate-field-settings-input-with-unit-selectable {
+                                .certificate-certificate-field-settings-unit {
+                                    cursor: pointer;
+
+                                    &:hover {
+                                        color: var(--secondary-color);
+                                    }
+                                }
+
+                                .certificate-certificate-field-settings-unit-active {
+                                    color: var(--secondary-color);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                .certificate-certificate-field-list-button {
+                    padding: 10px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
