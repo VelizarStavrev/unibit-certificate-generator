@@ -103,7 +103,27 @@ const CertificateService = {
                 message: 'An error occured!'
             }
         });
-    }
+    },
+    verifyCertificate: function (certificateId) {
+        // Send to the BE
+        return fetch(`http://localhost:8000/verify/${certificateId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch((error) => {
+            return {
+                status: false,
+                message: 'An error occured!'
+            }
+        });
+    },
 };
 
 export default CertificateService;

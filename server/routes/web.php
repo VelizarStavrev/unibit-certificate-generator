@@ -841,6 +841,29 @@ $router->get('/certificate/{certificateId}', function (Request $request, $certif
     ]);
 });
 
+// Verify a certificate
+$router->get('/verify/{certificateId}', function ($certificateId) {
+    // Anonymous users can check this data, too
+    $certificate_id = $certificateId;
+
+    // Get the certificate data
+    $certificate_query = 'SELECT * FROM certificates WHERE id = "' . $certificate_id . '"';
+    $certificate_results = app('db')->select($certificate_query);
+
+    if (count($certificate_results)) {
+        // Send a positive response
+        return response()->json([
+            'status' => true,
+            'message' => 'Certificate exists.',
+        ]);
+    }
+    
+    return response()->json([
+        'status' => false, 
+        'message' => 'The certificate was not found.',
+    ]);
+});
+
 // Token validation
 function isTokenValid($received_token) {
     $key = 'UNIBIT';
