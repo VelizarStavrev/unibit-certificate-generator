@@ -119,7 +119,7 @@ $router->post('/user/register', function (Request $request) {
     if ($results == 1) {
         return response()->json([
             'status' => true, 
-            'message' => 'User successfully registered!',
+            'message' => 'User registered successfully!',
             'type' => 'success'
         ]);
     }
@@ -127,7 +127,7 @@ $router->post('/user/register', function (Request $request) {
     // Return an error message
     return response()->json([
         'status' => false, 
-        'message' => 'An error occured!',
+        'message' => 'An error occured with the user registration!',
         'type' => 'error'
     ]);
 });
@@ -161,15 +161,15 @@ $router->post('/user/login', function (Request $request) {
 
             return response()->json([
                 'status' => true, 
-                'message' => 'The password is valid and the user should be logged in!',
+                'message' => 'User logged in successfully!',
                 'token' => $jwt
             ]);
         }
 
-        return response()->json(['status' => false, 'message' => 'The password is NOT valid and the user should NOT be logged in!']);
+        return response()->json(['status' => false, 'message' => 'Wrong password!']);
     }
 
-    return response()->json(['status' => false, 'message' => 'The username does not exist.']);
+    return response()->json(['status' => false, 'message' => 'Non-existent username!']);
 });
 
 // Data related routes
@@ -542,7 +542,7 @@ $router->get('/certificates', function (Request $request) {
     // Send a positive response
     return response()->json([
         'status' => true,
-        'message' => 'Certificates data retrieved succesfully.',
+        'message' => 'Certificate data retrieved succesfully.',
         'data' => $certificate_results,
     ]);
 });
