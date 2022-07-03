@@ -138,7 +138,7 @@ function Certificate(props) {
         certificateDeleteResult.then(res => {
             if (res.status) {
                 // Set a new message
-                addMessage('error', res.message ? res.message : 'An error occured.');
+                addMessage('success', res.message);
 
                 // Redirect the user
                 navigate('/dashboard/certificates/');
