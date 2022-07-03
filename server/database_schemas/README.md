@@ -6,6 +6,11 @@ roles
 
 ///////////////
 templates
-fields
-field_attributes
+template_fields
+template_field_attributes
+///////////////
+
+///////////////
+certificates
+certificate_fields
 ///////////////
