@@ -3,8 +3,11 @@ import { useState, useEffect, useContext } from 'react';
 import mainClass from '../../../../contexts/mainClassContext';
 import TemplateService from '../../../../services/TemplateService';
 import { useParams } from 'react-router-dom';
+import useAddMessage from '../../../../hooks/useAddMessage';
 
 function Template() {
+    const [ addMessage ] = useAddMessage();
+
     // Set the class of the main containter to be for this specific page
     const { setClass } = useContext(mainClass);
 
@@ -16,8 +19,6 @@ function Template() {
         const templateResult = TemplateService.getTemplate(templateIdReceived);
 
         templateResult.then(res => {
-            // TO DO - give an output to the user
-
             if (res.status) {
                 let data = res.data;
 
@@ -70,7 +71,13 @@ function Template() {
                 setTemplateNotes(data.notes);
                 setCertificateOrientation(data.orientation);
                 setCurrentFieldList(data.fields);
+
+                // Set a new message
+                addMessage('success', res.message);
             }
+
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }
 

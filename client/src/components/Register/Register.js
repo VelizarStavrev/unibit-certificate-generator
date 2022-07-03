@@ -1,11 +1,16 @@
 import './Register.scss';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../Shared/Button/Button';
 import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 import UserService from '../../services/UserService';
 import successIcon from '../../assets/icons/success.svg';
+import useAddMessage from '../../hooks/useAddMessage';
 
 function Register() {
+    const navigate = useNavigate();
+    const [ addMessage ] = useAddMessage();
+
     function userRegister() {
         const isFormValid = checkFormValidity();
 
@@ -22,6 +27,12 @@ function Register() {
 
                 // Show the success message
                 setFormSuccessDisplay('');
+
+                // Set a new message
+                addMessage('success', res.message);
+
+                // Redirect the user
+                navigate('/login');
                 return;
             }
 
@@ -43,6 +54,9 @@ function Register() {
             }
 
             setFormError(res.message ? res.message : 'An error occured.');
+
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }
 

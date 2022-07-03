@@ -3,10 +3,12 @@ import Button from '../Shared/Button/Button';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import isLogged from '../../contexts/isLoggedContext';
+import useAddMessage from '../../hooks/useAddMessage';
 
 function Profile() {
     const { setLogged } = useContext(isLogged);
     let navigate = useNavigate();
+    const [ addMessage ] = useAddMessage();
 
     function userLogout() {
         // Remove the token
@@ -15,6 +17,9 @@ function Profile() {
 
         // Redirect the user
         navigate('/login');
+
+        // Set a new message
+        addMessage('success', 'User logged out successfully!');
     }
 
     return (

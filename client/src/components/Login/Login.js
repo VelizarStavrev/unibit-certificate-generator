@@ -5,12 +5,12 @@ import Button from '../Shared/Button/Button';
 import ButtonLink from '../Shared/ButtonLink/ButtonLink';
 import UserService from '../../services/UserService';
 import isLogged from '../../contexts/isLoggedContext';
-import messageContext from '../../contexts/messageContext';
+import useAddMessage from '../../hooks/useAddMessage';
 
 function Login() {
     const { setLogged } = useContext(isLogged);
-    const { currentMessages, setCurrentMessages } = useContext(messageContext);
     const navigate = useNavigate();
+    const [ addMessage ] = useAddMessage();
 
     function userLogin() {
         const isFormValid = checkFormValidity();
@@ -28,10 +28,9 @@ function Login() {
                     localStorage.setItem('token', res.token);
                     setLogged(true);
 
-                    let newCurrentMessages = [...currentMessages];
-                    newCurrentMessages.push({messageType: 'success', messageText: 'Log in successful!'});
-                    setCurrentMessages(newCurrentMessages);
-
+                    // Set a new message
+                    addMessage('success', res.message);
+                    
                     // Redirect the user
                     navigate('/dashboard/certificates');
                 }
@@ -39,8 +38,11 @@ function Login() {
                 setFormError('');
                 return;
             }
-    
+            
             setFormError(res.message ? res.message : 'An error occured.');
+
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }
 

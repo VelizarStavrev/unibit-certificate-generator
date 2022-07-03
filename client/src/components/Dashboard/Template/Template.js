@@ -7,7 +7,7 @@ import Button from '../../Shared/Button/Button';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import TemplateService from '../../../services/TemplateService';
 import { useParams, useNavigate } from 'react-router-dom';
-import messageContext from '../../../contexts/messageContext';
+import useAddMessage from '../../../hooks/useAddMessage';
 
 function Template(props) {
     // Set the class of the main containter to be for this specific page
@@ -22,7 +22,7 @@ function Template(props) {
 
     // Template related functionality
     const navigate = useNavigate();
-    const { currentMessages, setCurrentMessages } = useContext(messageContext);
+    const [ addMessage ] = useAddMessage();
 
     function saveTemplate() {
         let fieldList = structuredClone(currentFieldList);
@@ -40,18 +40,16 @@ function Template(props) {
         
                 templateNewResult.then(res => {
                     if (res.status) {
-                        let newCurrentMessages = [...currentMessages];
-                        newCurrentMessages.push({messageType: 'success', messageText: 'Template creation successful!'});
-                        setCurrentMessages(newCurrentMessages);
+                        // Set a new message
+                        addMessage('success', res.message);
 
                         // Redirect the user
                         navigate('/dashboard/templates/');
                         return;
                     }
 
-                    let newCurrentMessages = [...currentMessages];
-                    newCurrentMessages.push({messageType: 'error', messageText: 'An error occured when creating the template!'});
-                    setCurrentMessages(newCurrentMessages);
+                    // Set a new message
+                    addMessage('error', res.message ? res.message : 'An error occured.');
                 });
                 break;
 
@@ -60,23 +58,22 @@ function Template(props) {
         
                 templateEditResult.then(res => {
                     if (res.status) {
-                        let newCurrentMessages = [...currentMessages];
-                        newCurrentMessages.push({messageType: 'success', messageText: 'Template edit successful!'});
-                        setCurrentMessages(newCurrentMessages);
+                        // Set a new message
+                        addMessage('success', res.message);
 
                         // Redirect the user
                         navigate('/dashboard/templates/');
                         return;
                     } 
 
-                    let newCurrentMessages = [...currentMessages];
-                    newCurrentMessages.push({messageType: 'error', messageText: 'An error occured when saving the template edit data!'});
-                    setCurrentMessages(newCurrentMessages);
+                    // Set a new message
+                    addMessage('error', res.message ? res.message : 'An error occured.');
                 });
                 break;
 
             default:
-                // TO DO
+                // Set a new message
+                addMessage('error', 'An error occured.');
         }
     }
 
@@ -106,18 +103,16 @@ function Template(props) {
         
         templateDeleteResult.then(res => {
             if (res.status) {
-                let newCurrentMessages = [...currentMessages];
-                newCurrentMessages.push({messageType: 'success', messageText: res.message});
-                setCurrentMessages(newCurrentMessages);
+                // Set a new message
+                addMessage('success', res.message);
 
                 // Redirect the user
                 navigate('/dashboard/templates/');
                 return;
             }
 
-            let newCurrentMessages = [...currentMessages];
-            newCurrentMessages.push({messageType: 'error', messageText: res.message});
-            setCurrentMessages(newCurrentMessages);
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }
 
@@ -181,15 +176,13 @@ function Template(props) {
                 setCertificateContainerWidthOffset(certificateContainerRef.current.offsetLeft);
                 setCurrentFieldList(data.fields);
 
-                let newCurrentMessages = [...currentMessages];
-                newCurrentMessages.push({messageType: 'success', messageText: res.message});
-                setCurrentMessages(newCurrentMessages);
+                // Set a new message
+                addMessage('success', res.message);
                 return;
             }
 
-            let newCurrentMessages = [...currentMessages];
-            newCurrentMessages.push({messageType: 'error', messageText: res.message});
-            setCurrentMessages(newCurrentMessages);
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }
 

@@ -7,7 +7,7 @@ import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import TemplateService from '../../../services/TemplateService';
 import CertificateService from '../../../services/CertificateService';
 import { useParams, useNavigate } from 'react-router-dom';
-import messageContext from '../../../contexts/messageContext';
+import useAddMessage from '../../../hooks/useAddMessage';
 
 function Certificate(props) {
     // Set the class of the main containter to be for this specific page
@@ -22,7 +22,7 @@ function Certificate(props) {
 
     // Template related functionality
     const navigate = useNavigate();
-    const { currentMessages, setCurrentMessages } = useContext(messageContext);
+    const [ addMessage ] = useAddMessage();
 
     function saveCertificate() {
         let fieldList = structuredClone(currentFieldList);
@@ -68,18 +68,16 @@ function Certificate(props) {
 
                 certificateNewResult.then(res => {
                     if (res.status) {
-                        let newCurrentMessages = [...currentMessages];
-                        newCurrentMessages.push({messageType: 'success', messageText: 'Certificate creation successful!'});
-                        setCurrentMessages(newCurrentMessages);
+                        // Set a new message
+                        addMessage('success', res.message);
 
                         // Redirect the user
                         navigate('/dashboard/certificates/');
                         return;
                     }
 
-                    let newCurrentMessages = [...currentMessages];
-                    newCurrentMessages.push({messageType: 'error', messageText: 'An error occured when creating the certificate!'});
-                    setCurrentMessages(newCurrentMessages);
+                    // Set a new message
+                    addMessage('error', res.message ? res.message : 'An error occured.');
                 });
                 break;
 
@@ -88,23 +86,22 @@ function Certificate(props) {
 
                 certificateEditResult.then(res => {
                     if (res.status) {
-                        let newCurrentMessages = [...currentMessages];
-                        newCurrentMessages.push({messageType: 'success', messageText: 'Certificate edit successful!'});
-                        setCurrentMessages(newCurrentMessages);
+                        // Set a new message
+                        addMessage('success', res.message);
 
                         // Redirect the user
                         navigate('/dashboard/certificates/');
                         return;
                     }
 
-                    let newCurrentMessages = [...currentMessages];
-                    newCurrentMessages.push({messageType: 'error', messageText: 'An error occured when editing the certificate!'});
-                    setCurrentMessages(newCurrentMessages);
+                    // Set a new message
+                    addMessage('error', res.message ? res.message : 'An error occured.');
                 });
                 break;
 
             default:
-                // TO DO
+                // Set a new message
+                addMessage('error', 'An error occured.');
         }
     }
 
@@ -140,18 +137,16 @@ function Certificate(props) {
 
         certificateDeleteResult.then(res => {
             if (res.status) {
-                let newCurrentMessages = [...currentMessages];
-                newCurrentMessages.push({messageType: 'success', messageText: res.message});
-                setCurrentMessages(newCurrentMessages);
+                // Set a new message
+                addMessage('error', res.message ? res.message : 'An error occured.');
 
                 // Redirect the user
                 navigate('/dashboard/certificates/');
                 return;
             }
 
-            let newCurrentMessages = [...currentMessages];
-            newCurrentMessages.push({messageType: 'error', messageText: res.message});
-            setCurrentMessages(newCurrentMessages);
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }
 

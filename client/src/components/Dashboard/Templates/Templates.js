@@ -6,10 +6,12 @@ import editIcon from '../../../assets/icons/edit.svg';
 import deleteIcon from '../../../assets/icons/delete.svg';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import TemplateService from '../../../services/TemplateService';
+import useAddMessage from '../../../hooks/useAddMessage';
 
 function Templates() {
     const initialTemplates = {};
     const [templates, setTemplates] = useState(initialTemplates); // empty object or field list
+    const [ addMessage ] = useAddMessage();
 
     // TO DO - add load on scroll for data if it's over a certain amount
     // TO DO - add filters in the header tags to make q request with certain data filtering
@@ -21,10 +23,14 @@ function Templates() {
         templatesResult.then(res => {
             if (res.status) {
                 setTemplates(res.data);
+            
+                // Set a new message
+                addMessage('success', res.message);
+                return;
             }
 
-            // TO DO
-            // Error handling
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }, []);
 
@@ -36,10 +42,15 @@ function Templates() {
                 let allTemplates = structuredClone(templates);
                 delete allTemplates[arrayIndex];
                 setTemplates(allTemplates);
+                
+                // Set a new message
+                addMessage('success', res.message);
+                return;
             }
-        });
 
-        // TO DO - error handling
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
+        });
     }
 
     return (

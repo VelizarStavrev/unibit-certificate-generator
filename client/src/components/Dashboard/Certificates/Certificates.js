@@ -1,17 +1,17 @@
 import './Certificates.scss';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import viewIcon from '../../../assets/icons/view.svg';
 import editIcon from '../../../assets/icons/edit.svg';
 import deleteIcon from '../../../assets/icons/delete.svg';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import CertificateService from '../../../services/CertificateService';
-import messageContext from '../../../contexts/messageContext';
+import useAddMessage from '../../../hooks/useAddMessage';
 
 function Certificates() {
     const initialCertificates = {};
     const [certificates, setCertificates] = useState(initialCertificates); // empty object or field list
-    const { currentMessages, setCurrentMessages } = useContext(messageContext);
+    const [ addMessage ] = useAddMessage();
 
     // TO DO - add load on scroll for data if it's over a certain amount
     // TO DO - add filters in the header tags to make q request with certain data filtering
@@ -23,10 +23,14 @@ function Certificates() {
         certificatesResult.then(res => {
             if (res.status) {
                 setCertificates(res.data);
+
+                // Set a new message
+                addMessage('success', res.message);
+                return;
             }
 
-            // TO DO
-            // Error handling
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }, []);
 
@@ -39,15 +43,13 @@ function Certificates() {
                 delete allCertificates[arrayIndex];
                 setCertificates(allCertificates);
 
-                let newCurrentMessages = [...currentMessages];
-                newCurrentMessages.push({messageType: 'success', messageText: res.message});
-                setCurrentMessages(newCurrentMessages);
+                // Set a new message
+                addMessage('success', res.message);
                 return;
             }
 
-            let newCurrentMessages = [...currentMessages];
-            newCurrentMessages.push({messageType: 'error', messageText: res.message});
-            setCurrentMessages(newCurrentMessages);
+            // Set a new message
+            addMessage('error', res.message ? res.message : 'An error occured.');
         });
     }
 
