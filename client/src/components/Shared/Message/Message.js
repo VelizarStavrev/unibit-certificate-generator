@@ -12,11 +12,11 @@ function Message() {
 
                 switch (value.messageType) {
                     case 'success':
-                        component = <p className='message-success' key={key} onClick={(e) => e.target.remove()}>{value.messageText}</p>
+                        component = <p className='message-success' key={key} onClick={(e) => e.target.remove()} onAnimationEnd={(e) => e.target.remove()}>{value.messageText}</p>
                         break;
 
                     case 'error':
-                        component = <p className='message-error' key={key} onClick={(e) => e.target.remove()}>{value.messageText}</p>
+                        component = <p className='message-error' key={key} onClick={(e) => e.target.remove()} onAnimationEnd={(e) => e.target.remove()}>{value.messageText}</p>
                         break;
 
                     default:
