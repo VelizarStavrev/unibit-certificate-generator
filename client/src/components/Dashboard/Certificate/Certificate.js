@@ -4,7 +4,8 @@ import mainClass from '../../../contexts/mainClassContext';
 import editIcon from '../../../assets/icons/edit.svg';
 import Button from '../../Shared/Button/Button';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
-import DataService from '../../../services/DataService';
+import TemplateService from '../../../services/TemplateService';
+import CertificateService from '../../../services/CertificateService';
 import { useParams, useNavigate } from 'react-router-dom';
 import messageContext from '../../../contexts/messageContext';
 
@@ -63,7 +64,7 @@ function Certificate(props) {
 
         switch (props.certificateType) {
             case 'new':
-                const certificateNewResult = DataService.createCertificate(data);
+                const certificateNewResult = CertificateService.createCertificate(data);
 
                 certificateNewResult.then(res => {
                     if (res.status) {
@@ -83,7 +84,7 @@ function Certificate(props) {
                 break;
 
             case 'edit':
-                const certificateEditResult = DataService.editCertificate(certificateId, data);
+                const certificateEditResult = CertificateService.editCertificate(certificateId, data);
 
                 certificateEditResult.then(res => {
                     if (res.status) {
@@ -135,7 +136,7 @@ function Certificate(props) {
     }
 
     function deleteCertificate() {
-        const certificateDeleteResult = DataService.deleteCertificate(certificateId);
+        const certificateDeleteResult = CertificateService.deleteCertificate(certificateId);
 
         certificateDeleteResult.then(res => {
             if (res.status) {
@@ -158,7 +159,7 @@ function Certificate(props) {
         setFieldSettingsMenuDisplay('hidden');
         setCurrentFieldListActive('');
         
-        const certificateResult = DataService.getCertificate(certificateIdReceived);
+        const certificateResult = CertificateService.getCertificate(certificateIdReceived);
 
         certificateResult.then(res => {
             // TO DO - give an output to the user
@@ -237,7 +238,7 @@ function Certificate(props) {
         setFieldSettingsMenuDisplay('hidden');
         setCurrentFieldListActive('');
         
-        const templateResult = DataService.getTemplate(templateIdReceived);
+        const templateResult = TemplateService.getTemplate(templateIdReceived);
 
         templateResult.then(res => {
             // TO DO - give an output to the user
@@ -349,7 +350,7 @@ function Certificate(props) {
     // Certificate type functionality
     useEffect(() => {
         // Get all templates
-        const templatesResult = DataService.getTemplates();
+        const templatesResult = TemplateService.getTemplates();
         
         templatesResult.then(res => {
             if (res.status) {

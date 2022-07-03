@@ -5,7 +5,7 @@ import viewIcon from '../../../assets/icons/view.svg';
 import editIcon from '../../../assets/icons/edit.svg';
 import deleteIcon from '../../../assets/icons/delete.svg';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
-import DataService from '../../../services/DataService';
+import TemplateService from '../../../services/TemplateService';
 
 function Templates() {
     const initialTemplates = {};
@@ -16,7 +16,7 @@ function Templates() {
 
     // Get the templates of the current user
     useEffect(() => {
-        const templatesResult = DataService.getTemplates();
+        const templatesResult = TemplateService.getTemplates();
         
         templatesResult.then(res => {
             if (res.status) {
@@ -29,7 +29,7 @@ function Templates() {
     }, []);
 
     function deleteTemplate(templateId, arrayIndex) {
-        const templateDeleteResult = DataService.deleteTemplate(templateId);
+        const templateDeleteResult = TemplateService.deleteTemplate(templateId);
         
         templateDeleteResult.then(res => {
             if (res.status) {

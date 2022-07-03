@@ -5,7 +5,7 @@ import viewIcon from '../../../assets/icons/view.svg';
 import editIcon from '../../../assets/icons/edit.svg';
 import deleteIcon from '../../../assets/icons/delete.svg';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
-import DataService from '../../../services/DataService';
+import CertificateService from '../../../services/CertificateService';
 import messageContext from '../../../contexts/messageContext';
 
 function Certificates() {
@@ -18,7 +18,7 @@ function Certificates() {
 
     // Get the certificates of the current user
     useEffect(() => {
-        const certificatesResult = DataService.getCertificates();
+        const certificatesResult = CertificateService.getCertificates();
         
         certificatesResult.then(res => {
             if (res.status) {
@@ -31,7 +31,7 @@ function Certificates() {
     }, []);
 
     function deleteCertificate(certificateId, arrayIndex) {
-        const certificateDeleteResult = DataService.deleteCertificate(certificateId);
+        const certificateDeleteResult = CertificateService.deleteCertificate(certificateId);
 
         certificateDeleteResult.then(res => {
             if (res.status) {

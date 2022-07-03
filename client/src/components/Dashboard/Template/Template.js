@@ -5,7 +5,7 @@ import editIcon from '../../../assets/icons/edit.svg';
 import deleteIcon from '../../../assets/icons/delete.svg';
 import Button from '../../Shared/Button/Button';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
-import DataService from '../../../services/DataService';
+import TemplateService from '../../../services/TemplateService';
 import { useParams, useNavigate } from 'react-router-dom';
 import messageContext from '../../../contexts/messageContext';
 
@@ -36,7 +36,7 @@ function Template(props) {
 
         switch (props.templateType) {
             case 'new':
-                const templateNewResult = DataService.createTemplate(data);
+                const templateNewResult = TemplateService.createTemplate(data);
         
                 templateNewResult.then(res => {
                     if (res.status) {
@@ -56,7 +56,7 @@ function Template(props) {
                 break;
 
             case 'edit':
-                const templateEditResult = DataService.editTemplate(templateId, data);
+                const templateEditResult = TemplateService.editTemplate(templateId, data);
         
                 templateEditResult.then(res => {
                     if (res.status) {
@@ -102,7 +102,7 @@ function Template(props) {
     }
 
     function deleteTemplate() {
-        const templateDeleteResult = DataService.deleteTemplate(templateId);
+        const templateDeleteResult = TemplateService.deleteTemplate(templateId);
         
         templateDeleteResult.then(res => {
             if (res.status) {
@@ -122,7 +122,7 @@ function Template(props) {
     }
 
     function getTemplateById(templateIdReceived) {
-        const templateResult = DataService.getTemplate(templateIdReceived);
+        const templateResult = TemplateService.getTemplate(templateIdReceived);
         templateResult.then(res => {
             if (res.status) {
                 let data = res.data;

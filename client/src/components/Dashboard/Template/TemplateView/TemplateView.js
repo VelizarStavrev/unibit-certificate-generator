@@ -1,7 +1,7 @@
 import '../Template.scss';
 import { useState, useEffect, useContext } from 'react';
 import mainClass from '../../../../contexts/mainClassContext';
-import DataService from '../../../../services/DataService';
+import TemplateService from '../../../../services/TemplateService';
 import { useParams } from 'react-router-dom';
 
 function Template() {
@@ -13,7 +13,7 @@ function Template() {
     }, [setClass]);
 
     function getTemplateById(templateIdReceived) {
-        const templateResult = DataService.getTemplate(templateIdReceived);
+        const templateResult = TemplateService.getTemplate(templateIdReceived);
 
         templateResult.then(res => {
             // TO DO - give an output to the user
