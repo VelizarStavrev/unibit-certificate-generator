@@ -13,8 +13,6 @@
 |
 */
 
-use Illuminate\Http\Request;
-
 // Used for token generation on login
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -54,12 +52,16 @@ $router->post('/certificate/edit/{certificateId}', 'CertificateController@certif
 // Delete a certificate
 $router->post('/certificate/delete/{certificateId}', 'CertificateController@certificateDelete');
 
+// Get a certificate file by id
+$router->get('/certificate/file/{certificateId}', 'CertificateController@certificatePDFGet');
+
 // Get a certificate by id
 $router->get('/certificate/{certificateId}', 'CertificateController@certificateGet');
 
 // Verify a certificate
 $router->get('/verify/{certificateId}', 'CertificateController@certificateVerify');
 
+// TO DO - use a middleware for validation
 // Token validation
 function isTokenValid($received_token) {
     $key = 'UNIBIT';

@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 // Other
 use DateTime;
 
+// THe DOMPDF library 
+// require_once dirname(__DIR__) . '/vendor/autoload.php';
+use Dompdf\Dompdf;
+
 class CertificateController extends BaseController
 {
     function certificatesGet (Request $request) {
@@ -96,10 +100,21 @@ class CertificateController extends BaseController
             }
     
             // If the for each didn't provide any errors
-            // Send a positive response response
+            // Generate a certificate
+            $isCertificateGenerated = $this->certificateGenerate($certificate_id, $template_id, $creator_id);
+
+            if ($isCertificateGenerated) {
+                // Send a positive response response
+                return response()->json([
+                    'status' => true, 
+                    'message' => 'Certificate was created successfully.',
+                ]);
+            }
+
+            // Send a negative response
             return response()->json([
-                'status' => true, 
-                'message' => 'Certificate was created successfully.',
+                'status' => false, 
+                'message' => 'An error occured with the certificate generation.',
             ]);
         }
     
@@ -234,7 +249,26 @@ class CertificateController extends BaseController
         $creator_id = $isTokenValid['decoded_token']['uid'];
         $certificate_id = $certificateId;
     
+        // Get the certificate data by id
+        $certificate_data_final = $this->certificateDataGet($certificate_id, $creator_id);
+
+        // Get the template data by id
+        $template_data_final = $this->templateGet($certificate_data_final->template_id, $creator_id);
+
+        // Send a positive response
+        return response()->json([
+            'status' => true,
+            'message' => 'Certificate data retrieved succesfully.',
+            'data' => $certificate_data_final,
+            'template_data' => $template_data_final
+        ]);
+    }
+
+    function certificateDataGet($certificateId, $creatorId) {
         // Get the certificate data
+        $certificate_id = $certificateId;
+        $creator_id = $creatorId;
+
         $certificate_query = 'SELECT * FROM certificates WHERE id = "' . $certificate_id . '" AND creator_id = "' . $creator_id . '"';
         $certificate_results = app('db')->select($certificate_query);
         $certificate_fields_data = [];
@@ -266,10 +300,231 @@ class CertificateController extends BaseController
     
         $certificate_data_final = $certificate_results[0];
         $certificate_data_final->fields = $certificate_fields_data;
+
+        return $certificate_data_final;
+    }
+
+    function certificatePDFGet(Request $request, $certificateId) {
+        // Check if the certificate directory exists
+        $certificate_dir = 'files/' . $certificateId;
+
+        if (!is_dir($certificate_dir)) {
+            return response()->json([
+                'status' => false, 
+                'message' => 'The certificate was not found.',
+            ]);
+        }
+
+        $host = $request->getSchemeAndHttpHost();
+        $url = $host . '/' . $certificate_dir . '/'. $certificateId . '.pdf';
+
+        return response()->json([
+            'status' => true, 
+            'message' => 'The certificate was found.',
+            'url' => $url
+        ]);
+    }
+
+    function certificateVerify ($certificateId) {
+        // Anonymous users can check this data, too
+        $certificate_id = $certificateId;
     
+        // Get the certificate data
+        $certificate_query = 'SELECT * FROM certificates WHERE id = "' . $certificate_id . '"';
+        $certificate_results = app('db')->select($certificate_query);
+    
+        if (count($certificate_results)) {
+            // Send a positive response
+            return response()->json([
+                'status' => true,
+                'message' => 'Certificate exists.',
+            ]);
+        }
+        
+        return response()->json([
+            'status' => false, 
+            'message' => 'The certificate was not found.',
+        ]);
+    }
+
+    // Certificate generate functions
+    // Set the data format, units and styles
+    function getFieldStyles($properties) {
+        $currentProperties = $properties;
+
+        foreach($currentProperties as $key => $property) {
+            if (in_array($key, ['content', 'url', 'editable', 'unit', 'units'])) {
+                continue;
+            }
+            
+            if ($key === 'transform') {
+                $currentProperties[$key]->value = 'rotate(' . $currentProperties[$key]->value . 'deg)';
+            }
+            
+            if (in_array($key, ['left', 'top', 'maxWidth', 'fontSize', 'height', 'width'])) {
+                $currentProperties[$key]->value = $currentProperties[$key]->value . $currentProperties[$key]->unit;
+            }
+        }
+        
+        $finalCSSObject = [];
+        
+        foreach($currentProperties as $key => $property) {
+            if (in_array($key, ['content', 'url', 'editable', 'unit', 'units'])) {
+                continue;
+            }
+
+            $currentPropertyValue = $currentProperties[$key]->value;
+
+            switch ($key) {
+                case 'top':
+                case 'transform':
+                case 'left':
+                    break;
+
+                case 'fontSize':
+                    $key = 'font-size';
+                    break;
+
+                case 'fontStyle':
+                    $key = 'font-style';
+                    break;
+
+                case 'fontWeight':
+                    $key = 'font-weight';
+                    break;
+
+                case 'maxWidth':
+                    $key = 'max-width';
+                    break;
+
+                case 'textAlign':
+                    $key = 'text-align';
+                    break;
+
+                case 'textDecoration':
+                    $key = 'text-decoration';
+                    break;
+
+                case 'zIndex':
+                    $key = 'z-index';
+                    break;
+
+                // TO DO
+                // Add fields for images and links
+            }
+
+            $currentCSSValue = $key . ':' . $currentPropertyValue;
+            array_push($finalCSSObject, $currentCSSValue);
+        }
+        
+        array_push($finalCSSObject, 'position: absolute');
+        return implode('; ', $finalCSSObject);
+    }
+
+    function certificateGenerate ($certificateId, $templateId, $creatorId) {
+        // Generate the HTML
+        $certificate_data = $this->certificateDataGet($certificateId, $creatorId);
+        $template_data = $this->templateGet($templateId, $creatorId);
+
+        // Set the certificate data in the template data
+        foreach ($certificate_data->fields as $key => $property) {
+            $current_field_certificate = $certificate_data->fields[$key];
+            $current_field_template = $template_data->fields[$key];
+            $current_field_template->properties[$current_field_certificate->name]->value = $current_field_certificate->value;
+        }
+
+        $template_fields = $template_data->fields;
+        $template_HTML = '';
+        
+        foreach ($template_fields as $field) {
+            $field_properties = $field->properties;
+            $field_styles = $this->getFieldStyles($field_properties);
+            $current_field_HTML = '';
+
+            switch ($field->type) {
+                case 'Text':
+                    $current_field_HTML = '<div style="' . $field_styles . '">' . $field_properties['content']->value . '</div>';
+                    break;
+
+                case 'Image':
+                    $current_field_HTML = '<div style="' . $field_styles . '"><img style="height: inherit; width: inherit" src=' . $field_properties['url']->value . 'alt="" /></div>';
+                    break;
+    
+                case 'Link':
+                    $current_field_HTML = '<div style="' . $field_styles . '"><a style="font-size: inherit; color: inherit; text-decoration: inherit" href=' . $field_properties['url']->value . '>' . $field_properties['content']->value . '</a></div>';
+                    break;
+    
+                default:
+                    return null;
+            }
+
+            $template_HTML = $template_HTML . $current_field_HTML;
+        }
+
+        // Instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        $options = new \Dompdf\Options();
+        // Set the options
+        $options->set(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+
+        // TO DO
+        // Received URL or image normal path
+        // $data = file_get_contents('https://teafloor.com/wp-content/themes/teafloor2-0/assets/images/logo.png');
+        // $data = file_get_contents('./testimage.jpg');
+        // $type = 'jpeg';
+        // $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+        $html = '<html> 
+                    <head>
+                        <style> 
+                            @page { margin: 0px; } 
+                            body { margin: 0px; } 
+                        </style> 
+                    </head>
+                    
+                    <body>
+                        <div style="width: 100%; height: 100%; position: relative; overflow: hidden;">
+                            <style> 
+                                body { 
+                                    margin: 0; 
+                                } 
+                            </style>
+                            ' . $template_HTML . '
+                        </div>
+                    </body> 
+                </html>';
+
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait'); // portrait or landscape
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Save to file - testing
+        $output = $dompdf->output();
+
+        // Check if the certificate directory exists
+        $certificate_dir = 'files/' . $certificateId;
+
+        if (!is_dir($certificate_dir)) {
+            // if the path doesn't exist, create it
+            mkdir($certificate_dir);
+        }
+
+        file_put_contents($certificate_dir . '/'. $certificateId . '.pdf', $output);
+
+        // Return a positive response
+        return true;
+    }
+    
+    function templateGet ($templateId, $creatorId) {
         // Get the template data
-        $template_id = $certificate_data_final->template_id;
-    
+        $template_id = $templateId;
+        $creator_id = $creatorId;
+
         // Get the template data
         $template_query = 'SELECT * FROM templates WHERE id = "' . $template_id . '" AND creator_id = "' . $creator_id . '"';
         $template_results = app('db')->select($template_query);
@@ -319,39 +574,6 @@ class CertificateController extends BaseController
     
         $template_data_final = $template_results[0];
         $template_data_final->fields = $template_fields_data;
-    
-        // Send a positive response
-        return response()->json([
-            'status' => true,
-            'message' => 'Certificate data retrieved succesfully.',
-            'data' => $certificate_data_final,
-            'template_data' => $template_data_final
-        ]);
-    }
-
-    function certificateVerify ($certificateId) {
-        // Anonymous users can check this data, too
-        $certificate_id = $certificateId;
-    
-        // Get the certificate data
-        $certificate_query = 'SELECT * FROM certificates WHERE id = "' . $certificate_id . '"';
-        $certificate_results = app('db')->select($certificate_query);
-    
-        if (count($certificate_results)) {
-            // Send a positive response
-            return response()->json([
-                'status' => true,
-                'message' => 'Certificate exists.',
-            ]);
-        }
-        
-        return response()->json([
-            'status' => false, 
-            'message' => 'The certificate was not found.',
-        ]);
-    }
-
-    function certificateGenerate () {
-        // TO DO
+        return $template_data_final;
     }
 }
