@@ -24,6 +24,10 @@ function Button(props) {
         buttonClasses += ' button-margin-top';
     }
 
+    if (props.buttonMarginBottom) {
+        buttonClasses += ' button-margin-bottom';
+    }
+
     if (props.buttonMarginLeft) {
         buttonClasses += ' button-margin-left';
     }
