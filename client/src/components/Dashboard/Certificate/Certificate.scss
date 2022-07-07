@@ -4,6 +4,16 @@
     width: 100%;
     align-self: flex-start;
 
+    &.certificate-container-file {
+        align-self: stretch;
+
+        iframe {
+            height: 100%;
+            width: 100%;
+            border: 2px solid lightgray;
+        }
+    }
+
     // The text and fields above the certificate
     .certificate-container-text-container {
         h1 {

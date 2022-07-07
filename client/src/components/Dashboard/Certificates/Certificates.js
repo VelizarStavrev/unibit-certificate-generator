@@ -93,7 +93,7 @@ function Certificates() {
                                 <td className='dashboard-table-template'>{value.template_name}</td>
                                 <td className='dashboard-table-created'>{date}</td>
                                 <td className='dashboard-table-actions'>
-                                    <Link className='dashboard-actions-button-link dashboard-actions-item' to={`/dashboard/certificate/${value.id}`}>
+                                    <Link className='dashboard-actions-button-link dashboard-actions-item' to={`/certificate/${value.id}`}>
                                         <img src={viewIcon} alt='View' />
                                     </Link>
 

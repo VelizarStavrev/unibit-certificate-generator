@@ -84,6 +84,25 @@ const CertificateService = {
             }
         });
     },
+    getCertificateFile: function (certificateId) {
+        // Send to the BE
+        return fetch(`http://localhost:8000/certificate/file/${certificateId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch((error) => {
+            return {
+                status: false,
+                message: 'An error occured!'
+            }
+        });
+    },
     getCertificates: function () {
         // Send to the BE
         return fetch(`http://localhost:8000/certificates`, {

@@ -38,6 +38,7 @@ import Template from './components/Dashboard/Template/Template';
 import TemplateView from './components/Dashboard/Template/TemplateView/TemplateView';
 import Certificates from './components/Dashboard/Certificates/Certificates';
 import Certificate from './components/Dashboard/Certificate/Certificate';
+import CertificateView from './components/Dashboard/Certificate/CertificateView/CertificateView';
 
 function App() {
   const checkIfLogged = localStorage.getItem('token') ? true : false;
@@ -63,6 +64,7 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Home />} />
                   <Route path='/verify' element={<Verify />} />
+                  <Route path='/certificate/:certificateId' element={<CertificateView />} />
                   <Route path='/documentation' element={<Documentation />}>
                     <Route path=':section' element={<Documentation />}>
                       <Route path=':topic' element={<Documentation />} />
@@ -85,7 +87,6 @@ function App() {
                   <Route element={<RequireAuth />}>
                     <Route path='/dashboard/certificates' element={<Certificates />} />
                     <Route path='/dashboard/certificate/new' element={<Certificate certificateType='new' />} />
-                    {/* <Route path='/dashboard/certificate/:certificateId' element={<CertificateView />} /> */}
                     <Route path='/dashboard/certificate/edit/:certificateId' element={<Certificate certificateType='edit' />} />
                     <Route path='/dashboard/templates' element={<Templates />} />
                     <Route path='/dashboard/template/new' element={<Template templateType='new' />} />
@@ -94,7 +95,9 @@ function App() {
                     <Route path='/profile' element={<Profile />} />
                   </Route>
 
-                  {/* <Route path='*' element={<404 />} /> */}
+                  {/* TO DO <Route path='/terms-of-use' element={<404 />} /> */}
+                  {/* TO DO <Route path='/privacy-policy' element={<404 />} /> */}
+                  {/* TO DO <Route path='*' element={<404 />} /> */}
                 </Routes>
             </main>
           </mainClass.Provider>
