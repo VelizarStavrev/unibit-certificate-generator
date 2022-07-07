@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use DateTime;
 
 // THe DOMPDF library 
-// require_once dirname(__DIR__) . '/vendor/autoload.php';
 use Dompdf\Dompdf;
 
 class CertificateController extends BaseController
@@ -421,6 +420,7 @@ class CertificateController extends BaseController
         return implode('; ', $finalCSSObject);
     }
 
+    // Generate the certificate PDF
     function certificateGenerate ($certificateId, $templateId, $creatorId) {
         // Generate the HTML
         $certificate_data = $this->certificateDataGet($certificateId, $creatorId);
@@ -520,6 +520,7 @@ class CertificateController extends BaseController
         return true;
     }
     
+    // Get the template for the certificate
     function templateGet ($templateId, $creatorId) {
         // Get the template data
         $template_id = $templateId;
