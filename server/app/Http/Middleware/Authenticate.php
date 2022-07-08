@@ -3,28 +3,13 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Factory as Auth;
+
+// JWT library functionality
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class Authenticate
 {
-    /**
-     * The authentication guard factory instance.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
-
-    /**
-     * Create a new middleware instance.
-     *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
-     * @return void
-     */
-    public function __construct(Auth $auth)
-    {
-        $this->auth = $auth;
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -35,10 +20,29 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+        $token = $request->bearerToken();
+
+        $key = 'UNIBIT';
+
+        try {
+            $decoded = JWT::decode($token, new Key($key, 'HS256'));
+            $decoded_array = (array) $decoded;
+
+            $request->attributes->add(['uid' => $decoded_array['uid']]);
+            
+            return $next($request);
+        } catch (\Exception $e) {
+            // Send a negative response
+            return response()->json([
+                'status' => false, 
+                'message' => 'An error occured on token validation.',
+            ]);
         }
 
-        return $next($request);
+        // Send a negative response
+        return response()->json([
+            'status' => false, 
+            'message' => 'An error occured on token validation.',
+        ]);
     }
 }

@@ -13,73 +13,48 @@
 |
 */
 
-// Used for token generation on login
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-
 // Account related routes
+// User registration
 $router->post('/user/register', 'UserController@userRegister');
 
+// User login
 $router->post('/user/login', 'UserController@userLogin');
 
 // Data related routes
 // Templates
 // Get all templates
-$router->get('/templates', 'TemplateController@templatesGet');
+$router->get('/templates', ['middleware' => 'auth', 'uses' => 'TemplateController@templatesGet']);
 
 // Create a new template
-$router->post('/template/new', 'TemplateController@templateCreate');
+$router->post('/template/new', ['middleware' => 'auth', 'uses' => 'TemplateController@templateCreate']);
 
 // Edit a template (save changes)
-$router->post('/template/edit/{templateId}', 'TemplateController@templateEdit');
+$router->post('/template/edit/{templateId}', ['middleware' => 'auth', 'uses' => 'TemplateController@templateEdit']);
 
 // Delete a template
-$router->post('/template/delete/{templateId}', 'TemplateController@templateDelete');
+$router->post('/template/delete/{templateId}', ['middleware' => 'auth', 'uses' => 'TemplateController@templateDelete']);
 
 // Get a template by id
-$router->get('/template/{templateId}', 'TemplateController@templateGet');
+$router->get('/template/{templateId}', ['middleware' => 'auth', 'uses' => 'TemplateController@templateGet']);
 
 // Certificates
 // Get all certificates
-$router->get('/certificates', 'CertificateController@certificatesGet');
+$router->get('/certificates', ['middleware' => 'auth', 'uses' => 'CertificateController@certificatesGet']);
 
 // Create a new certificate
-$router->post('/certificate/new', 'CertificateController@certificateCreate');
+$router->post('/certificate/new', ['middleware' => 'auth', 'uses' => 'CertificateController@certificateCreate']);
 
 // Edit a certificate (save changes)
-$router->post('/certificate/edit/{certificateId}', 'CertificateController@certificateEdit');
+$router->post('/certificate/edit/{certificateId}', ['middleware' => 'auth', 'uses' => 'CertificateController@certificateEdit']);
 
 // Delete a certificate
-$router->post('/certificate/delete/{certificateId}', 'CertificateController@certificateDelete');
+$router->post('/certificate/delete/{certificateId}', ['middleware' => 'auth', 'uses' => 'CertificateController@certificateDelete']);
 
 // Get a certificate file by id
 $router->get('/certificate/file/{certificateId}', 'CertificateController@certificatePDFGet');
 
 // Get a certificate by id
-$router->get('/certificate/{certificateId}', 'CertificateController@certificateGet');
+$router->get('/certificate/{certificateId}', ['middleware' => 'auth', 'uses' => 'CertificateController@certificateGet']);
 
 // Verify a certificate
 $router->get('/verify/{certificateId}', 'CertificateController@certificateVerify');
-
-// TO DO - use a middleware for validation
-// Token validation
-function isTokenValid($received_token) {
-    $key = 'UNIBIT';
-
-    try {
-        $decoded = JWT::decode($received_token, new Key($key, 'HS256'));
-        $decoded_array = (array) $decoded;
-        return [
-            'status' => true,
-            'decoded_token' => $decoded_array
-        ];
-    } catch (Exception $e) {
-        return [
-            'status' => false,
-        ];
-    }
-
-    return [
-        'status' => false,
-    ];
-}

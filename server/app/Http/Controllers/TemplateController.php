@@ -11,22 +11,7 @@ use DateTime;
 class TemplateController extends BaseController
 {
     function templatesGet (Request $request) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
     
         // Get the template data
         $template_query = 'SELECT * FROM templates WHERE creator_id = "' . $creator_id . '" ORDER BY created';
@@ -41,27 +26,12 @@ class TemplateController extends BaseController
     }
 
     function templateCreate (Request $request) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
         $data = $request->json()->all();
         
         $date = new DateTime();
         $timestamp = $date->getTimeStamp();
         
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
         $template_id = md5($timestamp) . $creator_id; // The creator id guarantees a unique id even if the strings match
         $template_name = $data['name'];
         $template_notes = $data['notes'];
@@ -140,22 +110,7 @@ class TemplateController extends BaseController
     }
 
     function templateEdit (Request $request, $templateId) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
         $template_id = $templateId;
     
         $data = $request->json()->all();
@@ -239,22 +194,7 @@ class TemplateController extends BaseController
     }
 
     function templateDelete (Request $request, $templateId) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
         $template_id = $templateId;
     
         // Delete all previous fields and create new ones
@@ -270,22 +210,7 @@ class TemplateController extends BaseController
     }
 
     function templateGet (Request $request, $templateId) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
         $template_id = $templateId;
     
         // Get the template data

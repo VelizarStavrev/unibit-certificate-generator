@@ -14,22 +14,7 @@ use Dompdf\Dompdf;
 class CertificateController extends BaseController
 {
     function certificatesGet (Request $request) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
     
         // Get the certificate data
         $certificate_query = 'SELECT certificates.*, templates.name AS "template_name" FROM certificates INNER JOIN templates ON certificates.template_id=templates.id WHERE certificates.creator_id = "' . $creator_id . '" ORDER BY certificates.created';
@@ -44,27 +29,12 @@ class CertificateController extends BaseController
     }
 
     function certificateCreate (Request $request) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
         $data = $request->json()->all();
         
         $date = new DateTime();
         $timestamp = $date->getTimeStamp();
         
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
         $template_id = $data['template_id'];
         $certificate_id = md5($timestamp) . $creator_id; // The creator id guarantees a unique id even if the strings match
         $certificate_name = $data['name'];
@@ -124,25 +94,10 @@ class CertificateController extends BaseController
         ]);
     }
 
-    function certificateEdit (Request $request, $certificateId) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
+    function certificateEdit (Request $request, $certificateId) { 
         $data = $request->json()->all();
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+
+        $creator_id = $request->get('uid');
         $template_id = $data['template_id'];
         $certificate_id = $certificateId;
     
@@ -198,22 +153,7 @@ class CertificateController extends BaseController
     }
 
     function certificateDelete (Request $request, $certificateId) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
         $certificate_id = $certificateId;
     
         // Delete all previous fields and create new ones
@@ -230,22 +170,7 @@ class CertificateController extends BaseController
     }
 
     function certificateGet (Request $request, $certificateId) {
-        $token = $request->bearerToken();
-        $isTokenValid = isTokenValid($token);
-        
-        if (!$isTokenValid['status']) {
-            // TO DO
-            // Give the FE info to delete the invalid token in the browser
-            // Redirect the user to login
-    
-            // Send a negative response
-            return response()->json([
-                'status' => false, 
-                'message' => 'Your token is invalid.',
-            ]);
-        }
-    
-        $creator_id = $isTokenValid['decoded_token']['uid'];
+        $creator_id = $request->get('uid');
         $certificate_id = $certificateId;
     
         // Get the certificate data by id
@@ -261,46 +186,6 @@ class CertificateController extends BaseController
             'data' => $certificate_data_final,
             'template_data' => $template_data_final
         ]);
-    }
-
-    function certificateDataGet($certificateId, $creatorId) {
-        // Get the certificate data
-        $certificate_id = $certificateId;
-        $creator_id = $creatorId;
-
-        $certificate_query = 'SELECT * FROM certificates WHERE id = "' . $certificate_id . '" AND creator_id = "' . $creator_id . '"';
-        $certificate_results = app('db')->select($certificate_query);
-        $certificate_fields_data = [];
-    
-        if (count($certificate_results)) {
-            // Get the field ids
-            $certificate_fields_query = 'SELECT * FROM certificate_fields WHERE certificate_id = "' . $certificate_id . '"';
-            $certificate_fields_results = app('db')->select($certificate_fields_query);
-            
-            if (count($certificate_fields_results)) {
-                foreach ($certificate_fields_results as $current_field) {
-                    $current_field_data = $current_field;
-                    $current_field_id = $current_field->id;
-    
-                    $certificate_fields_data[$current_field_id] = $current_field_data;
-                }
-            } else {
-                return response()->json([
-                    'status' => false, 
-                    'message' => 'The certificate fields could not be retrieved.',
-                ]);
-            }
-        } else {
-            return response()->json([
-                'status' => false, 
-                'message' => 'The certificate was not found.',
-            ]);
-        }
-    
-        $certificate_data_final = $certificate_results[0];
-        $certificate_data_final->fields = $certificate_fields_data;
-
-        return $certificate_data_final;
     }
 
     function certificatePDFGet(Request $request, $certificateId) {
@@ -346,7 +231,47 @@ class CertificateController extends BaseController
         ]);
     }
 
-    // Certificate generate functions
+    // Certificate reusable functions
+    // Get the certificate data
+    function certificateDataGet($certificateId, $creatorId) {
+        $certificate_id = $certificateId;
+        $creator_id = $creatorId;
+
+        $certificate_query = 'SELECT * FROM certificates WHERE id = "' . $certificate_id . '" AND creator_id = "' . $creator_id . '"';
+        $certificate_results = app('db')->select($certificate_query);
+        $certificate_fields_data = [];
+    
+        if (count($certificate_results)) {
+            // Get the field ids
+            $certificate_fields_query = 'SELECT * FROM certificate_fields WHERE certificate_id = "' . $certificate_id . '"';
+            $certificate_fields_results = app('db')->select($certificate_fields_query);
+            
+            if (count($certificate_fields_results)) {
+                foreach ($certificate_fields_results as $current_field) {
+                    $current_field_data = $current_field;
+                    $current_field_id = $current_field->id;
+    
+                    $certificate_fields_data[$current_field_id] = $current_field_data;
+                }
+            } else {
+                return response()->json([
+                    'status' => false, 
+                    'message' => 'The certificate fields could not be retrieved.',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => false, 
+                'message' => 'The certificate was not found.',
+            ]);
+        }
+    
+        $certificate_data_final = $certificate_results[0];
+        $certificate_data_final->fields = $certificate_fields_data;
+
+        return $certificate_data_final;
+    }
+
     // Set the data format, units and styles
     function getFieldStyles($properties) {
         $currentProperties = $properties;

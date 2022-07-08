@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 // Used for token generation on login
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
 // Other
 use DateTime;
