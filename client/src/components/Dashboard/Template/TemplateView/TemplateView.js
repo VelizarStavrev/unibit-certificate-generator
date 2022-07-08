@@ -74,6 +74,7 @@ function Template() {
 
                 // Set a new message
                 addMessage('success', res.message);
+                return;
             }
 
             // Set a new message
