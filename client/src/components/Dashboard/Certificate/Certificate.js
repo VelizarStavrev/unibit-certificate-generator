@@ -127,11 +127,6 @@ function Certificate(props) {
         }
     }
 
-    function regenerateCertificate() {
-        // TO DO
-        // Regenerates the file on the BE
-    }
-
     function deleteCertificate() {
         const certificateDeleteResult = CertificateService.deleteCertificate(certificateId);
 
@@ -496,7 +491,6 @@ function Certificate(props) {
                     <div className='certificate-certificate-button-container'>
                         <div className='certificate-certificate-button-container-button'>
                             <Button buttonText='Save certificate' buttonType='Primary' buttonMarginRight='true' clickFunction={saveCertificate} />
-                            <Button buttonText='Regenerate' buttonType='Secondary' buttonMarginRight='true' clickFunction={regenerateCertificate} />
                             <Button buttonText='Reset' buttonType='Secondary' buttonMarginRight='true' clickFunction={resetCertificate} />
 
                             {props.certificateType === 'edit' ? (
