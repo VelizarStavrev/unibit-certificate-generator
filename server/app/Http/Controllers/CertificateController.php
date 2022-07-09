@@ -68,7 +68,7 @@ class CertificateController extends BaseController
                 }
             }
     
-            // If the for each didn't provide any errors
+            // If the certificates and fields didn't provide any errors
             // Generate a certificate
             $isCertificateGenerated = $this->certificateGenerate($certificate_id, $template_id, $creator_id);
 
@@ -137,11 +137,22 @@ class CertificateController extends BaseController
                 }
             }
     
-            // If the for each didn't provide any errors
-            // Send a positive response response
+            // If the certificates and fields didn't provide any errors
+            // Generate a certificate
+            $isCertificateGenerated = $this->certificateGenerate($certificate_id, $template_id, $creator_id);
+
+            if ($isCertificateGenerated) {
+                // Send a positive response response
+                return response()->json([
+                    'status' => true, 
+                    'message' => 'Certificate was edited successfully.',
+                ]);
+            }
+            
+            // Send a negative response
             return response()->json([
-                'status' => true, 
-                'message' => 'Certificate was edited successfully.',
+                'status' => false, 
+                'message' => 'An error occured with the certificate generation.',
             ]);
         }
     
@@ -160,12 +171,17 @@ class CertificateController extends BaseController
         $field_query_delete = 'DELETE FROM certificates WHERE id = "' . $certificate_id . '" AND creator_id = "' . $creator_id . '"';
         $field_results_delete = app('db')->delete($field_query_delete);
         
-        // Send a positive response response
-        // TO DO - add a check if the certificate was deleted - do the same for the tempaltes
+        // Check if the certificate was deleted
+        if ($field_results_delete > 0) {
+            return response()->json([
+                'status' => true, 
+                'message' => 'Certificate was deleted successfully.',
+            ]);
+        }
+
         return response()->json([
-            'status' => true, 
-            'message' => 'Certificate was deleted successfully.',
-            'results' => $field_results_delete
+            'status' => false, 
+            'message' => 'Certificate was not deleted.',
         ]);
     }
 

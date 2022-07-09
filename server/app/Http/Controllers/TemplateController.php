@@ -201,11 +201,17 @@ class TemplateController extends BaseController
         $field_query_delete = 'DELETE FROM templates WHERE id = "' . $template_id . '" AND creator_id = "' . $creator_id . '"';
         $field_results_delete = app('db')->delete($field_query_delete);
         
-        // Send a positive response response
+        // Check if the certificate was deleted
+        if ($field_results_delete > 0) {
+            return response()->json([
+                'status' => true, 
+                'message' => 'Template was deleted successfully.',
+            ]);
+        }
+
         return response()->json([
-            'status' => true, 
-            'message' => 'Template was deleted successfully.',
-            'results' => $field_results_delete
+            'status' => false, 
+            'message' => 'Template was not deleted.',
         ]);
     }
 
