@@ -1,8 +1,9 @@
-.dashboard-container-templates {
+.dashboard-container {
     max-width: 1040px;
     margin: 0 auto;
     width: 100%;
     align-self: flex-start;
+    text-align: center;
     
     .dashboard-search-and-nav {
         display: flex;
@@ -32,6 +33,7 @@
         box-shadow: var(--box-shadow-card);
         border-radius: 10px;
         border-collapse: collapse;
+        margin-bottom: 20px;
         
         th,
         td {

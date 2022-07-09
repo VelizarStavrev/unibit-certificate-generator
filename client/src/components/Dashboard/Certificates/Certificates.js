@@ -8,6 +8,7 @@ import Button from '../../Shared/Button/Button';
 import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import CertificateService from '../../../services/CertificateService';
 import useAddMessage from '../../../hooks/useAddMessage';
+import Table from '../../Shared/Table/Table';
 
 function Certificates() {
     const initialCertificates = [];
@@ -85,66 +86,20 @@ function Certificates() {
         setRemainingCertificates(certificatesToRemain);
     }
 
+    function searchCertificate() {
+        // TO DO
+        console.log('Search certificates');
+    }
+
     return (
-        <div className='dashboard-container-certificates'>
-            <div className='dashboard-search-and-nav'>
-                <input className='dashboard-search' placeholder='Search . . .' />
-
-                <ButtonLink buttonText='Add New' buttonLink='/dashboard/certificate/new' buttonType='Primary' buttonMarginLeft='true' />
-                <ButtonLink buttonText='Templates' buttonLink='/dashboard/templates' buttonType='Primary' buttonMarginLeft='true' />
-            </div>
-
-            <table className='dashboard-table'>
-                <thead>
-                    <tr>
-                        <th colSpan='5' className='dashboard-table-header'>Your generated certificates</th>
-                    </tr>
-                    
-                    <tr>
-                        <th className='dashboard-table-number'>№</th>
-                        <th className='dashboard-table-name'>Certificate name</th>
-                        <th className='dashboard-table-template'>Template used</th>
-                        <th className='dashboard-table-created'>Date created</th>
-                        <th className='dashboard-table-actions'>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {Object.keys(certificates).length > 0 ? Object.entries(certificates).map(([key, value]) => {
-                        function addZeroForTwoDigits(dateData) {
-                            return dateData < 10 ? '0' + dateData : dateData;
-                        }
-                        
-                        const dateInitial = new Date(value.created * 1000);
-                        const date = addZeroForTwoDigits(dateInitial.getDate()) + '/' + addZeroForTwoDigits(dateInitial.getMonth() + 1) + '/' + addZeroForTwoDigits(dateInitial.getFullYear());
-
-                        return (
-                            <tr key={key}>
-                                <td className='dashboard-table-number'>{Number(key) + 1}</td>
-                                <td className='dashboard-table-name'>{value.name}</td>
-                                <td className='dashboard-table-template'>{value.template_name}</td>
-                                <td className='dashboard-table-created'>{date}</td>
-                                <td className='dashboard-table-actions'>
-                                    <Link className='dashboard-actions-button-link dashboard-actions-item' to={`/certificate/${value.id}`}>
-                                        <img src={viewIcon} alt='View' />
-                                    </Link>
-
-                                    <Link className='dashboard-actions-button-link dashboard-actions-item' to={`/dashboard/certificate/edit/${value.id}`}>
-                                        <img src={editIcon} alt='Edit' />
-                                    </Link>
-
-                                    <button type='button' className='dashboard-actions-item'>
-                                        <img src={deleteIcon} alt='Delete' onClick={() => deleteCertificate(value.id, key)} />
-                                    </button>
-                                </td>
-                            </tr>
-                        )
-                    }) : <tr className='dashboard-table-message' colSpan='5'><td colSpan='5'>No certificates were found.</td></tr>}
-                </tbody>
-            </table>
-            
-            {remainingCertificates.length <= 0 ? '' : <Button buttonText='Load more' buttonType='Primary' buttonMarginBottom='true' clickFunction={loadMoreCertificates} />}
-        </div>
+        <Table  
+            tableType={'certificate'} 
+            tableData={certificates} 
+            tableRemainingData={remainingCertificates}
+            deleteFunction={deleteCertificate} 
+            searchFunction={searchCertificate} 
+            loadMoreFunction={loadMoreCertificates}
+        />
     );
 }
 
