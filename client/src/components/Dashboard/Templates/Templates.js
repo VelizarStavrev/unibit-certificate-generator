@@ -1,4 +1,3 @@
-import './Templates.scss';
 import { useEffect, useState } from 'react';
 import TemplateService from '../../../services/TemplateService';
 import useAddMessage from '../../../hooks/useAddMessage';

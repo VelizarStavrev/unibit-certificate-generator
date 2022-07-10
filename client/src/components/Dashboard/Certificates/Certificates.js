@@ -1,4 +1,3 @@
-import './Certificates.scss';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import viewIcon from '../../../assets/icons/view.svg';
