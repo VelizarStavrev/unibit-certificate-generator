@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import messageContext from '../contexts/messageContext';
 
-export default function useAddMessage() {
+function useAddMessage() {
     const { currentMessages, setCurrentMessages } = useContext(messageContext);
 
     function addMessage(messageType, messageText) {
@@ -12,3 +12,5 @@ export default function useAddMessage() {
 
     return [addMessage];
 }
+
+export default useAddMessage;
