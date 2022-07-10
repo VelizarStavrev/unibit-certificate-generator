@@ -1,10 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import viewIcon from '../../../assets/icons/view.svg';
-import editIcon from '../../../assets/icons/edit.svg';
-import deleteIcon from '../../../assets/icons/delete.svg';
-import Button from '../../Shared/Button/Button';
-import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import CertificateService from '../../../services/CertificateService';
 import useAddMessage from '../../../hooks/useAddMessage';
 import Table from '../../Shared/Table/Table';
