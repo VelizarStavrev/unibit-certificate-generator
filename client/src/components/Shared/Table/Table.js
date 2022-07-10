@@ -53,7 +53,7 @@ function Table(props) {
     }
 
     return (
-        <div className='dashboard-container-templates'>
+        <div className='dashboard-container'>
             <div className='dashboard-search-and-nav'>
                 {/* TO DO - implement SEARCH */}
                 <input className='dashboard-search' placeholder='Search . . .' />
