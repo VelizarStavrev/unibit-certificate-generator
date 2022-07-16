@@ -22,6 +22,8 @@ function Login() {
         const loginResult = UserService.userLoginRequest(username, password);
         
         loginResult.then(res => {
+            setFormError('');
+
             if (res.status) {
                 if (res.token) {
                     // Log the user in - update the app state to logged in
@@ -33,10 +35,8 @@ function Login() {
                     
                     // Redirect the user
                     navigate('/dashboard/certificates');
+                    return;
                 }
-
-                setFormError('');
-                return;
             }
             
             setFormError(res.message ? res.message : 'An error occured.');
