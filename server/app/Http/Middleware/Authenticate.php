@@ -21,7 +21,6 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         $token = $request->bearerToken();
-
         $key = 'UNIBIT';
 
         try {
