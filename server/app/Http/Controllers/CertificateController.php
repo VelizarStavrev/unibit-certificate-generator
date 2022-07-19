@@ -438,8 +438,9 @@ class CertificateController extends BaseController
 
         $dompdf->loadHtml($html);
 
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait'); // portrait or landscape
+        // Setup the paper size and orientation
+        $orientation = $template_data->orientation === 'vertical' ? 'portrait' : 'landscape';
+        $dompdf->setPaper('A4', $orientation); // portrait or landscape
 
         // Render the HTML as PDF
         $dompdf->render();
