@@ -40,7 +40,6 @@ function Certificate() {
 
     return (
         <div className='certificate-container certificate-container-file'>
-            {console.log(certificateId)}
             <iframe src={certificateURL} title={'Certificate with ID: ' + certificateId}></iframe>
         </div>
     );
