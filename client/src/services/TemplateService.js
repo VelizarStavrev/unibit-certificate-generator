@@ -1,8 +1,8 @@
-const token = localStorage.getItem('token');
-
 const TemplateService = {
     // Templates
     createTemplate: function (fieldData) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/template/new`, {
             method: 'POST',
@@ -24,6 +24,8 @@ const TemplateService = {
         });
     },
     editTemplate: function (templateId, fieldData) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/template/edit/${templateId}`, {
             method: 'POST',
@@ -45,6 +47,8 @@ const TemplateService = {
         });
     },
     deleteTemplate: function (templateId) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/template/delete/${templateId}`, {
             method: 'POST',
@@ -65,6 +69,8 @@ const TemplateService = {
         });
     },
     getTemplate: function (templateId) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/template/${templateId}`, {
             method: 'GET',
@@ -85,6 +91,8 @@ const TemplateService = {
         });
     },
     getTemplates: function () {
+        const token = localStorage.getItem('token');
+        
         // Send to the BE
         return fetch(`http://localhost:8000/templates`, {
             method: 'GET',

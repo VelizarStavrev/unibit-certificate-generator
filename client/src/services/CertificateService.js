@@ -1,8 +1,8 @@
-const token = localStorage.getItem('token');
-
 const CertificateService = {   
     // Certificates
     createCertificate: function (fieldData) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/certificate/new`, {
             method: 'POST',
@@ -24,6 +24,8 @@ const CertificateService = {
         });
     },
     editCertificate: function (certificateId, fieldData) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/certificate/edit/${certificateId}`, {
             method: 'POST',
@@ -45,6 +47,8 @@ const CertificateService = {
         });
     },
     deleteCertificate: function (certificateId) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/certificate/delete/${certificateId}`, {
             method: 'POST',
@@ -65,6 +69,8 @@ const CertificateService = {
         });
     },
     getCertificate: function (certificateId) {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/certificate/${certificateId}`, {
             method: 'GET',
@@ -104,6 +110,8 @@ const CertificateService = {
         });
     },
     getCertificates: function () {
+        const token = localStorage.getItem('token');
+
         // Send to the BE
         return fetch(`http://localhost:8000/certificates`, {
             method: 'GET',
@@ -129,7 +137,6 @@ const CertificateService = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
             },
         })
         .then(response => response.json())
