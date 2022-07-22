@@ -2,6 +2,7 @@ import './Header.scss';
 import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import isLogged from '../../../contexts/isLoggedContext';
+import unibitLogo from '../../../assets/logos/unibit.svg'
 
 function Header() {
     const { logged } = useContext(isLogged);
@@ -9,7 +10,10 @@ function Header() {
     return (
         <header>
             <nav>
-                <Link className='link-home' to='/'>certificates</Link>
+                <Link className='link-home' to='/'>
+                    <img src={unibitLogo} alt='' />
+                    certificates
+                </Link>
                 
                 <ul>
                     {logged ? (
