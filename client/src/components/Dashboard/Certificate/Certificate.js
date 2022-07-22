@@ -51,7 +51,8 @@ function Certificate(props) {
                     break
 
                 default:
-                    // TO DO
+                    // Set a new message
+                    addMessage('error', 'An error occured.');
             }
         }
 
@@ -361,7 +362,8 @@ function Certificate(props) {
                 break;
 
             default:
-                // TO DO - ERROR
+                // Set a new message
+                addMessage('error', 'An error occured.');
         }
     }, [props.certificateType, certificateId]);
 

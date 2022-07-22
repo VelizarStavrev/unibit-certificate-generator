@@ -94,7 +94,8 @@ function Template(props) {
                 break;
 
             default:
-                // TO DO
+                // Set a new message
+                addMessage('error', 'An error occured.');
         }
     }
 
@@ -450,7 +451,6 @@ function Template(props) {
 
             default:
                 currentProperties = {};
-                break;
         }
 
         currentField.properties = currentProperties;
@@ -579,7 +579,8 @@ function Template(props) {
                 break;
 
             default:
-                // TO DO - ERROR
+                // Set a new message
+                addMessage('error', 'An error occured.');
         }
     }, [props.templateType, templateId]);
 

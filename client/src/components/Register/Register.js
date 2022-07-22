@@ -46,11 +46,9 @@ function Register() {
                     break;
 
                 case 'error':
-                    setFormError('An error occured.');
-                    break;
-                
                 default:
-                    break;
+                    setFormError('An error occured.');
+                    addMessage('error', 'An error occured.');
             }
 
             setFormError(res.message ? res.message : 'An error occured.');
