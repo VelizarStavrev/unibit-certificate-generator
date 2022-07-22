@@ -272,7 +272,7 @@ function Template(props) {
                     'color': {
                         label: 'Text color',
                         value: '#000000',
-                        type: 'text'
+                        type: 'color'
                     },
                     'fontWeight': {
                         label: 'Font weight',
@@ -408,7 +408,7 @@ function Template(props) {
                     'color': {
                         label: 'Text color',
                         value: '#4287f5',
-                        type: 'text'
+                        type: 'color'
                     },
                     'fontWeight': {
                         label: 'Font weight',
@@ -828,6 +828,14 @@ function Template(props) {
                                                         False
                                                     </label>
                                                 </div>
+                                            </div>
+                                        );
+
+                                    case 'color':
+                                        return (
+                                            <div className='template-certificate-field-settings template-certificate-field-settings-colors' key={key}>
+                                                <label>{value.label}</label>
+                                                <input type='color' value={value.value} onChange={(e) => updateField(fieldSettingsMenuValues.id, key, e.target.value)} />
                                             </div>
                                         );
 

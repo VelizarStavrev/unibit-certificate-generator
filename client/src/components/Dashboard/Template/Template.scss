@@ -366,6 +366,20 @@
                                 }
                             }
                         }
+
+                        &.template-certificate-field-settings-colors {
+                            input {
+                                cursor: pointer;
+                                padding: 10px;
+                                background-color: var(--main-color);
+                                height: 39px;
+                                transition: var(--transition-background-color);
+
+                                &:hover {
+                                    background-color: var(--main-color-hover);
+                                }
+                            }
+                        }
                     }
                 }
                 
