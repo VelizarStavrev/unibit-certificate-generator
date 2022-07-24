@@ -8,6 +8,7 @@ import ButtonLink from '../../Shared/ButtonLink/ButtonLink';
 import TemplateService from '../../../services/TemplateService';
 import { useParams, useNavigate } from 'react-router-dom';
 import useAddMessage from '../../../hooks/useAddMessage';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function Template(props) {
     // Set the class of the main containter to be for this specific page
@@ -197,6 +198,7 @@ function Template(props) {
 
     const [certificateOrientation, setCertificateOrientation] = useState('vertical'); // vertical or horizontal
     const [currentFieldList, setCurrentFieldList] = useState(initialFieldStructure); // empty object or field list
+    const [currentFieldListSorted, setCurrentFieldListSorted] = useState([]); // empty array or field list
 
     // Add field menu functionality
     const [fieldAddMenuDisplay, setFieldAddMenuDisplay] = useState('hidden'); // hidden or ''
@@ -208,7 +210,7 @@ function Template(props) {
 
         // If there are no fields, set a z-index of 1
         if (Object.keys(fieldList).length <= 0) {
-            return 1;
+            return 0;
         }
 
         for (const field in fieldList) {
@@ -506,6 +508,111 @@ function Template(props) {
         setFieldSettingsMenuValues(fieldList[fieldId]);
     }
 
+    // Field list drag functionality
+    function updateFieldListPositions(result) {
+        // Exit the function if the final destination is not the droppable area
+        if (!result.destination) {
+            return;
+        }
+
+        let fieldId = result.draggableId;
+        let fieldPropertyName = 'zIndex';
+        let zIndexValue = result.destination.index;
+
+        let direction = zIndexValue > result.source.index ? 'up' : 'down';
+        console.log(direction);
+
+        // Get the field sorted list of all z indexes
+        let currentFieldListArray = Object.entries(currentFieldList);
+        let currentFieldListSortedObject = sortFieldList(currentFieldListArray);
+        let zIndexValueExists = false;
+        let zIndexValueCounter = 0;
+        let swapNextField = false;
+        let stopSwapping = false;
+
+        if (direction === 'up') {
+            zIndexValue = zIndexValue + 1;
+        }
+        
+        // Compare to the current zindex
+        for (let currentField in currentFieldListSortedObject) {
+            let currentFieldValue = currentFieldListSortedObject[currentField]['properties']['zIndex'].value;
+
+            console.log({
+                'currentFieldValue': currentFieldValue,
+                'zIndexValue': zIndexValue,
+                'zIndexValueCounter': zIndexValueCounter,
+            });
+
+            // If it exists, reorder everything above it to +1
+            // AND
+            // If the index existed in the previous fields, increment the current ones value
+            if (currentFieldValue === zIndexValue || zIndexValueExists) {
+                if (direction === 'down') {
+                    zIndexValueCounter++;
+                }
+                
+                if (direction === 'up') {
+                    zIndexValueCounter++;
+                }
+
+                if (direction === 'up' && swapNextField) {
+                    stopSwapping = true;
+                    currentFieldListSortedObject[currentField]['properties']['zIndex'].value = zIndexValueCounter - 1;
+                    continue;
+                }
+
+                console.log('zIndexValueExists', zIndexValueExists, zIndexValueCounter);
+
+                currentFieldListSortedObject[currentField]['properties']['zIndex'].value = zIndexValueCounter;
+
+                zIndexValueExists = true;
+
+                if (direction === 'up' && !stopSwapping) {
+                    swapNextField = true;
+                }
+                continue;
+            }
+
+            currentFieldListSortedObject[currentField]['properties']['zIndex'].value = zIndexValueCounter;
+            zIndexValueCounter++;
+        }
+
+        // Set it to the sorted handler
+        setCurrentFieldListSorted(currentFieldListSortedObject);
+
+        // Update the individual field
+        updateField(fieldId, fieldPropertyName, zIndexValue);
+    }
+
+    function sortFieldList(currentFieldListArray) {
+        currentFieldListArray.sort((a, b) => {
+            let firstValue = a[1]['properties']['zIndex'].value;
+            let secondValue = b[1]['properties']['zIndex'].value;
+
+            return firstValue - secondValue;
+        });
+
+        let currentFieldListSortedObject = {};
+
+        for (let fieldPair of currentFieldListArray) {
+            let currentKey = fieldPair[0];
+            let currentValue = fieldPair[1];
+
+            currentFieldListSortedObject[currentKey] = currentValue;
+        }
+
+        return currentFieldListSortedObject;
+    }
+
+    useEffect(() => {
+        let currentFieldListArray = Object.entries(currentFieldList);
+        let currentFieldListSortedObject = sortFieldList(currentFieldListArray);
+
+        // Set it to the sorted handler
+        setCurrentFieldListSorted(currentFieldListSortedObject);
+    }, [currentFieldList]);
+
     // Certificate display functionality
     const certificateContainerRef = useRef(null);
     const [certificateContainerHeight, setCertificateContainerHeight] = useState(0);
@@ -716,21 +823,33 @@ function Template(props) {
                         <div className='template-certificate-field-list-header'>
                             Fields
                         </div>
+                        
+                        <DragDropContext onDragEnd={updateFieldListPositions}>
+                            <Droppable droppableId='fields'>
+                                {(provided) => (
+                                    <div id='field-list' className='template-certificate-field-list-content' {...provided.droppableProps} ref={provided.innerRef}>
+                                        {Object.keys(currentFieldListSorted).length > 0 ? Object.entries(currentFieldListSorted).map(([key, value], index) => {
+                                            return (
+                                                <Draggable key={key} draggableId={key} index={index}>
+                                                    {(provided) => (
+                                                        <div className={'template-certificate-field ' + (currentFieldListActive === key ? 'template-certificate-field-active' : '')} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                            {value.type}
 
-                        <div id='field-list' className='template-certificate-field-list-content'>
-                            {Object.keys(currentFieldList).length > 0 ? Object.entries(currentFieldList).map(([key, value]) => {
-                                return (
-                                    <div className={'template-certificate-field ' + (currentFieldListActive === key ? 'template-certificate-field-active' : '')} key={key}>
-                                        {value.type}
-
-                                        <div className='template-certificate-field-buttons'>
-                                            <button type='button' className='button-edit' onClick={() => editField(key)}><img src={editIcon} alt='Edit' /></button>
-                                            <button type='button' className='button-delete' onClick={() => deleteField(key)}><img src={deleteIcon} alt='Delete' /></button>
-                                        </div>
+                                                            <div className='template-certificate-field-buttons'>
+                                                                <button type='button' className='button-edit' onClick={() => editField(key)}><img src={editIcon} alt='Edit' /></button>
+                                                                <button type='button' className='button-delete' onClick={() => deleteField(key)}><img src={deleteIcon} alt='Delete' /></button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            );
+                                        }) : <p className='template-certificate-field-text'>No fields.</p>}
+    
+                                        {provided.placeholder}
                                     </div>
-                                );
-                            }) : <p className='template-certificate-field-text'>No fields.</p>}
-                        </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
 
                         <div className='template-certificate-field-list-button'>
                             <Button buttonText='Add field' buttonType='Primary'
